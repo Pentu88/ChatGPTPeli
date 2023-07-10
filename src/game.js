@@ -1,3 +1,11 @@
+/// *** Lisätty ChatGPT'n luomaa koodia
+var gameOver = false; // Alustetaan pelin lopputilaksi false
+/// ***
+
+/// *** Lisätty ChatGPT'n luomaa koodia
+var score = 0; // Alustetaan pistemäärä nollaksi
+/// ***
+
 // Pelaajan kalan tiedot
 var playerFish = {
   id: 1,
@@ -56,9 +64,56 @@ function updateGame() {
     fish.position += fish.level * fish.speed * 2; // Muuta kalan liikkumisnopeutta muuttamalla kerrointa
 
     // Tarkista, osuuko pelaajan kala muihin kaloihin
-    if (fish.position <= 60 && fish.position >= 20 && fish.level <= playerFish.level) {
+    /* if (fish.position <= 60 && fish.position >= 20 && fish.level <= playerFish.level) {
       console.log("Pelaajan kala osui kalaan " + fish.id + "!");
       // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
+    } */
+	
+	// Tarkista, osuuko pelaajan kala muihin kaloihin
+    if (
+      // NOTICE arvoja säädetty jotta tunnistetaan osuminen paremmin, mikäli ns. kalojen päät ovat ohittaneet toisensa, kumpikaan kala ei syö toista.
+      fish.position <= 560 && // Kala on pelaajan kalan lähellä vaakasuunnassa
+      fish.position >= 550 && // Kala on pelaajan kalan lähellä vaakasuunnassa
+      fish.height <= playerFish.position + 30 && // Kala on pelaajan kalan korkeuden alueella
+      fish.height + 30 >= playerFish.position && // Kala on pelaajan kalan korkeuden alueella
+      fish.level <= playerFish.level // Kala on pelaajan tasoa pienempi tai yhtä suuri
+    ) {
+      console.log("Pelaajan kala osui kalaan " + fish.id + "!");
+      // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
+	  // *** Lisätty ChatGPT'n luomaa koodia
+	  if (fish.color === "red") {
+        console.log("Peli päättyi! Punainen kala osui pelaajan kalaa.");
+        // Tässä voit lisätä tarvittavat toimenpiteet, kun punainen kala osuu pelaajan kalaa.
+        // Esimerkiksi pelin lopettaminen tai aloittaa uudelleen.
+		
+		// *** Lisätty ChatGPT'n luomaa koodia
+		// Tässä vaiheessa peli päättyy
+		gameOver = true;
+		// ***
+		
+		// Lisätty ChatGPT'n luomaa koodia
+      } else if (fish.color === "yellow") {
+        console.log("Pelaaja sai pisteen!");
+        score++; // Lisätään pistemäärään yksi
+		
+		// *** Lisättiin ChatGPT'n luomaa koodia
+		// Poista kala fishList-listalta
+		// TODO poistettavan kalan lähdettä muutettu
+        var fishIndex = fishList.indexOf(fish);
+        if (fishIndex !== -1) {
+          fishList.splice(fishIndex, 1);
+        }
+	  // ***
+	  // ***
+      } else {
+        // Tässä voit toteuttaa toimenpiteet, kun kalat osuvat yhteen, mutta kala ei ole punainen.
+	  }
+	  // ***
+	  
+	  // *** Lisätty ChatGPT'n luomaa koodia
+	  // Päivitä pistemäärän näyttö
+	  document.getElementById("score-display").textContent = score;
+	  // ***
     }
 
     // Piirrä kala
@@ -68,12 +123,19 @@ function updateGame() {
   }
 
   // Generoi uusi kala satunnaisesti
-  if (Math.random() < 0.02) { // Voit säätää generointitiheyttä muuttamalla lukua
+  // NOTICE generointi tiheyttä muutettu
+  if (Math.random() < 0.013) { // Voit säätää generointitiheyttä muuttamalla lukua
     generateFish();
   }
 
   // Kutsu updateGame-funktiota uudelleen päivittämään peli
-  requestAnimationFrame(updateGame);
+  // *X* requestAnimationFrame(updateGame);
+  /// ***
+  // Tarkista, onko peli päättynyt
+  if (!gameOver) {
+    requestAnimationFrame(updateGame);
+  }
+  // ***
 }
 
 // Liikuta pelaajan kalaa pystysuunnassa
