@@ -1,6 +1,6 @@
 # Kalapeli
 
-## v0.2.0
+## [v0.2.0](https://github.com/Pentu88/ChatGPTPeli/tree/cdb9ff904b597dce4161118cc1ff1b85fa4904b6)
 ### Uusia ominaisuuksia
 - Peliin lisätty erivärisiä kaloja
 - Pisteiden keräys ja esittäminen pelaajalle
