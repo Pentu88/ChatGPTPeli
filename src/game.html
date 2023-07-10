@@ -3,8 +3,37 @@
 <head>
   <title>Demon Runner</title>
   <style>
-    canvas {
+    #game-container {
+      display: flex;
+    }
+
+    #game-canvas {
       border: 1px solid black;
+    }
+
+    #game-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #game-restart-button {
+      width: 100px;
+      height: 40px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -16,8 +45,9 @@
   <h2>Pisteet: <span id="score-display">0</span></h2>
   <!-- *** -->
   
-  <!-- NOTICE pelialueen kokoa muutettu -->
-  <canvas id="game-canvas" width="600" height="300"></canvas>
+  <div id="game-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
 
   <script src="game.js"></script>
 </body>

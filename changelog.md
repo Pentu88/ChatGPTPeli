@@ -1,6 +1,13 @@
 # Kalapeli
 
+## v0.2.1
+
+### Bugeja korjattu
+- Pelin suoritusta ei aloiteta sivun päivittämisen yhteydessä. 
+- Peliin lisätty "game over" -näkymä
+
 ## v0.2.0
+
 ### Uusia ominaisuuksia
 - Peliin lisätty erivärisiä kaloja
 - Pisteiden keräys ja esittäminen pelaajalle

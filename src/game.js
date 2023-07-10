@@ -1,5 +1,10 @@
 /// *** Lisätty ChatGPT'n luomaa koodia
-var gameOver = false; // Alustetaan pelin lopputilaksi false
+var canvas = document.getElementById("game-canvas");
+var ctx = canvas.getContext("2d");
+/// ***
+
+/// *** Lisätty ChatGPT'n luomaa koodia
+var gameOver = false; // Alustetaan peli lopetetuksi
 /// ***
 
 /// *** Lisätty ChatGPT'n luomaa koodia
@@ -16,6 +21,64 @@ var playerFish = {
 
 // Luo uuden kalalistan, johon lisätään muut kalaobjektit
 var fishList = [];
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// Piirrä "Aloita peli" -nappi
+function drawStartGame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Tyhjennä canvas
+
+  ctx.fillStyle = "#4CAF50";
+  ctx.fillRect(canvas.width / 2 - 80, canvas.height / 2 - 25, 160, 50);
+
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText("Aloita peli", canvas.width / 2, canvas.height / 2 + 8);
+
+  canvas.addEventListener("click", startGame);
+}
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// Piirrä "Peli loppui" -viesti ja "Aloita peli" -nappi
+function drawGameOver() {
+  ctx.save(); // Tallenna piirtotila
+
+  ctx.globalAlpha = 0.2; // Aseta läpinäkyvyys
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.globalAlpha = 1; // Palauta täysi läpinäkyvyys
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText("Peli loppui!", canvas.width / 2, canvas.height / 2 - 20);
+
+  ctx.fillStyle = "#4CAF50";
+  ctx.fillRect(canvas.width / 2 - 80, canvas.height / 2 + 10, 160, 50);
+
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "white";
+  ctx.fillText("Aloita peli", canvas.width / 2, canvas.height / 2 + 40);
+
+  ctx.restore(); // Palauta piirtotila
+
+  canvas.addEventListener("click", startGame);
+}
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// Aloita peli
+function startGame() {
+  // NOTICE Muuttujat on säästetty funktion edellisestä versiosta
+  fishList = [];
+  score = 0;
+  
+  canvas.removeEventListener("click", startGame);
+  gameOver = false;
+  updateGame();
+}
+// ***
 
 // Generoi uusi kalaobjekti satunnaisella korkeudella, tasolla, värillä ja nopeudella
 function generateFish() {
@@ -82,16 +145,15 @@ function updateGame() {
       // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
 	  // *** Lisätty ChatGPT'n luomaa koodia
 	  if (fish.color === "red") {
-        console.log("Peli päättyi! Punainen kala osui pelaajan kalaa.");
-        // Tässä voit lisätä tarvittavat toimenpiteet, kun punainen kala osuu pelaajan kalaa.
-        // Esimerkiksi pelin lopettaminen tai aloittaa uudelleen.
 		
 		// *** Lisätty ChatGPT'n luomaa koodia
-		// Tässä vaiheessa peli päättyy
+		console.log("Peli päättyi! Punainen kala osui pelaajan kalaa.");
 		gameOver = true;
+		// NOTICE drawGameOver suorittaminen siirretty myöhemmäksi, jotta kaloja ei piirretä lopetus ruudun päälle
+		// drawGameOver();
 		// ***
 		
-		// Lisätty ChatGPT'n luomaa koodia
+		// *** Lisätty ChatGPT'n luomaa koodia
       } else if (fish.color === "yellow") {
         console.log("Pelaaja sai pisteen!");
         score++; // Lisätään pistemäärään yksi
@@ -105,6 +167,18 @@ function updateGame() {
         }
 	  // ***
 	  // ***
+	  
+	  // *** Lisätty ChatGPT'n luomaa koodia
+	  // TODO Myöhempä käyttöä varten
+      } else if (fish.color === "blue") {
+        console.log("Pelaaja sai kolme pistettä kuplasta!");
+        score += 3; // Lisätään pistemäärään kolme
+
+        // Poista kupla fishList-listalta
+        var fishIndex = fishList.indexOf(fish);
+        if (fishIndex !== -1) {
+          fishList.splice(fishIndex, 1);
+        }
       } else {
         // Tässä voit toteuttaa toimenpiteet, kun kalat osuvat yhteen, mutta kala ei ole punainen.
 	  }
@@ -134,6 +208,9 @@ function updateGame() {
   // Tarkista, onko peli päättynyt
   if (!gameOver) {
     requestAnimationFrame(updateGame);
+  } else {
+	// NOTICE drawGameOver metodin paikkaa muutettu
+	drawGameOver(); 
   }
   // ***
 }
@@ -151,5 +228,7 @@ function movePlayerFish(event) {
 // Kuuntele nuolinäppäimiä pelaajan kalan liikuttamiseksi
 document.addEventListener("keydown", movePlayerFish);
 
-// Aloita peli
-updateGame();
+// *** Lisätty ChatGPT'n luomaa koodia
+// Kutsu drawGameOver-funktiota pelin alussa
+drawStartGame();
+// ***
