@@ -11,6 +11,15 @@ var gameOver = false; // Alustetaan peli lopetetuksi
 var score = 0; // Alustetaan pistemäärä nollaksi
 /// ***
 
+// *** Lisätty ChatGPT'n luomaa koodia
+// Alkuperäinen pelaajan kalan position arvo
+var initialPlayerPosition = 150;
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+var fishCount = 0; // Alustetaan generoitujen kalojen määrä nollaksi
+// ***
+
 // Pelaajan kalan tiedot
 var playerFish = {
   id: 1,
@@ -44,7 +53,7 @@ function drawStartGame() {
 function drawGameOver() {
   ctx.save(); // Tallenna piirtotila
 
-  ctx.globalAlpha = 0.2; // Aseta läpinäkyvyys
+  ctx.globalAlpha = 0.5; // Aseta läpinäkyvyys
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -74,6 +83,20 @@ function startGame() {
   fishList = [];
   score = 0;
   
+  // *** Lisätty ChatGPT'n luomaa koodia
+  fishCount = 0; // Nollaa generoitujen kalojen määrä
+  // ***
+  
+  // *** Lisätty ChatGPT'n luomaa koodia
+  // Palauta pelaajan kalan position alkuperäiseen arvoon
+  playerFish.position = initialPlayerPosition;
+  // ***
+  
+  // *** Lisätty ChatGPT'n luomaa koodia
+  // Päivitä pistemäärän näyttö
+  document.getElementById("score-display").textContent = score;
+  // ***
+  
   canvas.removeEventListener("click", startGame);
   gameOver = false;
   updateGame();
@@ -91,6 +114,11 @@ function generateFish() {
   // NOTICE satunnaisen nopeamman kalan arpomista muuteettu
   var speed = Math.random() < 0.15 ? 1.5 : 1; // Satunnainen nopeus (2 tai 1)
   addFish(id, position, height, level, color, speed);
+  
+  // *** Lisätty ChatGPT'n luomaa koodia
+  // fishList.push(fish);
+  fishCount++; // Kasvata generoitujen kalojen määrää yhdellä
+  // ***
 }
 
 // Lisää uusi kalaobjekti kalalistaan
