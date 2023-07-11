@@ -6,6 +6,7 @@
 - Pelin suoritusta ei aloiteta sivun päivittämisen yhteydessä. 
 - Peliin lisätty "game over" -näkymä
 - Kalojen määrän laskentaa korjattu
+- Kalan ohjausta korjattu jouhevammaksi
 
 ## [v0.2.0](https://github.com/Pentu88/ChatGPTPeli/tree/cdb9ff904b597dce4161118cc1ff1b85fa4904b6)
 

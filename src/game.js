@@ -4,6 +4,15 @@ var ctx = canvas.getContext("2d");
 /// ***
 
 /// *** Lisätty ChatGPT'n luomaa koodia
+var gameWidth = canvas.width;
+var gameHeight = canvas.height;
+/// ***
+
+/// *** Lisätty ChatGPT'n luomaa koodia
+var movementInterval; // Muuttuja liikkeen päivitystä varten
+/// ***
+
+/// *** Lisätty ChatGPT'n luomaa koodia
 var gameOver = false; // Alustetaan peli lopetetuksi
 /// ***
 
@@ -23,9 +32,13 @@ var fishCount = 0; // Alustetaan generoitujen kalojen määrä nollaksi
 // Pelaajan kalan tiedot
 var playerFish = {
   id: 1,
-  position: 150,
+  position: initialPlayerPosition, // 
   level: 1,
-  color: "orange"
+  color: "orange",
+  // NOTICE nopeus arvo muutettu samankaltaiseksi, kuin muilla kaloilla
+  speed: 1,
+  width: 30, // Kalan leveys
+  height: 50, // Kalan korkeus
 };
 
 // Luo uuden kalalistan, johon lisätään muut kalaobjektit
@@ -135,8 +148,9 @@ function addFish(id, position, height, level, color, speed) {
 }
 
 // Alusta Canvas-elementti
-var canvas = document.getElementById("game-canvas");
-var ctx = canvas.getContext("2d");
+// TODO tiedoston alusta löytyy saman muuttujat, pitäisikö tuplat poistaa?
+// var canvas = document.getElementById("game-canvas");
+// var ctx = canvas.getContext("2d");
 
 // Päivittää pelitapahtumat ja liikuttaa kaloja
 function updateGame() {
@@ -243,6 +257,7 @@ function updateGame() {
   // ***
 }
 
+/* DEBUG
 // Liikuta pelaajan kalaa pystysuunnassa
 function movePlayerFish(event) {
   var keyCode = event.keyCode;
@@ -255,6 +270,66 @@ function movePlayerFish(event) {
 
 // Kuuntele nuolinäppäimiä pelaajan kalan liikuttamiseksi
 document.addEventListener("keydown", movePlayerFish);
+*/
+
+// *** Lisätty ChatGPT'n luomaa koodia
+function startMoving(direction) {
+  // Tarkista, että liike ei ole jo käynnissä
+  if (!movementInterval) {
+    movementInterval = setInterval(function () {
+      // Päivitä pelaajan kalan sijaintia haluttuun suuntaan
+      updatePlayerFishPosition(direction);
+    }, 10); // Päivitä liike pienellä aikavälillä (esim. 10 ms)
+  }
+}
+
+function stopMoving() {
+  // Pysäytä liike ja tyhjennä interval-muuttuja
+  clearInterval(movementInterval);
+  movementInterval = null;
+}
+
+document.addEventListener("keydown", function (event) {
+  // Tarkista, minkä nuolinäppäimen tapahtuma laukaisi
+  switch (event.keyCode) {
+    case 38: // Nuolinäppäin ylös
+      startMoving("up");
+      break;
+    case 40: // Nuolinäppäin alas
+      startMoving("down");
+      break;
+  }
+});
+
+document.addEventListener("keyup", function (event) {
+  // Tarkista, minkä nuolinäppäimen tapahtuma laukaisi
+  switch (event.keyCode) {
+    case 38: // Nuolinäppäin ylös
+    case 40: // Nuolinäppäin alas
+      stopMoving();
+      break;
+  }
+});
+
+function updatePlayerFishPosition(direction) {
+  // Päivitä pelaajan kalan sijaintia haluttuun suuntaan
+  if (direction === "up") {
+    playerFish.position -= playerFish.speed;
+  } else if (direction === "down") {
+    playerFish.position += playerFish.speed;
+  }
+
+  // Varmista, että pelaajan kala pysyy pelialueella
+  if (playerFish.position < playerFish.height / 2) {
+    playerFish.position = playerFish.height / 2;
+  } else if (playerFish.position > gameHeight - playerFish.height / 2) {
+    playerFish.position = gameHeight - playerFish.height / 2;
+  }
+  // Piirrä pelaajan kala päivitettyyn sijaintiin
+  // NOTICE funktio kutsu poistettu käytöstä
+  // drawPlayerFish();
+}
+// ***
 
 // *** Lisätty ChatGPT'n luomaa koodia
 // Kutsu drawGameOver-funktiota pelin alussa
