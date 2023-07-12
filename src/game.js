@@ -1,9 +1,4 @@
 /// *** Lisätty ChatGPT'n luomaa koodia
-var canvas = document.getElementById("game-canvas");
-var ctx = canvas.getContext("2d");
-/// ***
-
-/// *** Lisätty ChatGPT'n luomaa koodia
 var gameWidth = canvas.width;
 var gameHeight = canvas.height;
 /// ***
@@ -20,6 +15,9 @@ var gameOver = false; // Alustetaan peli lopetetuksi
 var score = 0; // Alustetaan pistemäärä nollaksi
 /// ***
 
+/// NOTICE lisätty muuttuja, johon ChatGPT on viitannut luomassaan koodissa
+normalSpeed = 1
+
 // *** Lisätty ChatGPT'n luomaa koodia
 // Alkuperäinen pelaajan kalan position arvo
 var initialPlayerPosition = 150;
@@ -32,62 +30,22 @@ var fishCount = 0; // Alustetaan generoitujen kalojen määrä nollaksi
 // Pelaajan kalan tiedot
 var playerFish = {
   id: 1,
-  position: initialPlayerPosition, // 
+  // NOTICE lisätty muuttuja ChatGPT'n muuttuja viittauksen pohjalta 
+  positionX: 40, // NOTICE arvoa muutettu, ettei kala ole pelialueen reunassa kiinni
+  positionY: initialPlayerPosition, //
+  position: 30,
   level: 1,
   color: "orange",
-  // NOTICE nopeus arvo muutettu samankaltaiseksi, kuin muilla kaloilla
-  speed: 1,
-  width: 30, // Kalan leveys
-  height: 50, // Kalan korkeus
+  // NOTICE nopeus arvo muutettu takaisin alkuperäiseen kuosiinsa (Viimeisin keskustelu, versio v0.2.1)
+  speed: normalSpeed,
+  width: 50, // Kalan leveys
+  height: 30, // Kalan korkeus
 };
 
 // Luo uuden kalalistan, johon lisätään muut kalaobjektit
 var fishList = [];
 
-// *** Lisätty ChatGPT'n luomaa koodia
-// Piirrä "Aloita peli" -nappi
-function drawStartGame() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Tyhjennä canvas
 
-  ctx.fillStyle = "#4CAF50";
-  ctx.fillRect(canvas.width / 2 - 80, canvas.height / 2 - 25, 160, 50);
-
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-  ctx.fillText("Aloita peli", canvas.width / 2, canvas.height / 2 + 8);
-
-  canvas.addEventListener("click", startGame);
-}
-// ***
-
-// *** Lisätty ChatGPT'n luomaa koodia
-// Piirrä "Peli loppui" -viesti ja "Aloita peli" -nappi
-function drawGameOver() {
-  ctx.save(); // Tallenna piirtotila
-
-  ctx.globalAlpha = 0.5; // Aseta läpinäkyvyys
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.globalAlpha = 1; // Palauta täysi läpinäkyvyys
-  ctx.font = "30px Arial";
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-  ctx.fillText("Peli loppui!", canvas.width / 2, canvas.height / 2 - 20);
-
-  ctx.fillStyle = "#4CAF50";
-  ctx.fillRect(canvas.width / 2 - 80, canvas.height / 2 + 10, 160, 50);
-
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "white";
-  ctx.fillText("Aloita peli", canvas.width / 2, canvas.height / 2 + 40);
-
-  ctx.restore(); // Palauta piirtotila
-
-  canvas.addEventListener("click", startGame);
-}
-// ***
 
 // *** Lisätty ChatGPT'n luomaa koodia
 // Aloita peli
@@ -102,7 +60,7 @@ function startGame() {
   
   // *** Lisätty ChatGPT'n luomaa koodia
   // Palauta pelaajan kalan position alkuperäiseen arvoon
-  playerFish.position = initialPlayerPosition;
+  playerFish.positionY = initialPlayerPosition;
   // ***
   
   // *** Lisätty ChatGPT'n luomaa koodia
@@ -116,73 +74,123 @@ function startGame() {
 }
 // ***
 
-// Generoi uusi kalaobjekti satunnaisella korkeudella, tasolla, värillä ja nopeudella
+// *** Lisätty ChatGPT'n luomaa koodia
+function getRandomColor() {
+  const colors = ["red", "yellow", "blue"];
+  // NOTICE arvonnan todennäköisyyksiä muutettu
+  const probabilities = [0.45, 0.45, 0.1]; // Punainen 40%, keltainen 40%, sininen 20%
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < colors.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return colors[i];
+    }
+  }
+
+  return colors[0]; // Oletusarvo punainen, jos jotain menee pieleen
+}
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// NOTICE yhdistelty aikaisemmista versioista sopivammaksi
 function generateFish() {
-  var id = fishList.length + 2; // Generoidaan uniikki ID
   // NOTICE kalan aloitus kohtaa muutettu
-  var position = 0; // Kala alkaa liikkua pelialueen oikeasta reunasta
-  var height = Math.floor(Math.random() * 240) + 20; // Satunnainen korkeus (20-260)
-  var level = Math.floor(Math.random() * playerFish.level) + 1; // Satunnainen taso (1-pelaajan taso)
-  var color = Math.random() < 0.5 ? "red" : "yellow"; // Satunnainen väri (punainen tai keltainen)
-  // NOTICE satunnaisen nopeamman kalan arpomista muuteettu
-  var speed = Math.random() < 0.15 ? 1.5 : 1; // Satunnainen nopeus (2 tai 1)
-  addFish(id, position, height, level, color, speed);
+  // const positionX = 0; // Aseta kalan alkusijainti pelialueen oikeaan reunaan
+  const positionX = gameWidth;
+  // const positionY = Math.random() * gameHeight; // Arvo satunnainen sijainti pystysuunnassa
+  var positionY = Math.floor(Math.random() * 240) + 20; // Satunnainen korkeus (20-260); // Arvo satunnainen sijainti pystysuunnassa
+
+  // NOTICE arvoja muutettu
+  let width = 40; // Aseta kalan leveys
+  let height = 20; // Aseta kalan korkeus
+
+  // const colors = ["red", "yellow"];
+  // const color = colors[Math.floor(Math.random() * colors.length)];
+  const color = getRandomColor();
+  
+  // NOTICE Satunnaisen nopeamman kalan arpomista muuteettu
+  let speed = Math.random() < 0.12 ? 1.5 : 1;
+  
+  // *** Lisätty ChatGPT'n luomaa koodia
+  if (color === "blue") {
+    // Kuplia esiintyy harvemmin
+	// Notice arvoja muutettu
+    speed = Math.random() < 0.08 ? .8 : 1;
+
+    // Sinisille kaloille pienempi koko
+    width = 40;
+    height = 40;
+  } else if (color === "red") {
+    // Punaisille kaloille suurempi koko
+    width = 55;
+    height = 35;
+  }
+  // ***
+  
+  const fish = {
+	// DEBUG pidetään toistaiseksi kalan ominaisuutena  
+	level: Math.floor(Math.random() * playerFish.level) + 1, // Satunnainen taso (1-pelaajan taso)
+    	
+	// NOTICE Säästetty aikaisempi versio
+    id: fishCount + 2, // Lisää 2 id:hen, jotta huomioi pelaajan kalan
+    positionX,
+    positionY,
+    width,
+    height,
+    color,
+    speed,
+  };
+
+  // Lisää uusi kalaobjekti kalalistaan
+  fishList.push(fish);
   
   // *** Lisätty ChatGPT'n luomaa koodia
   // fishList.push(fish);
   fishCount++; // Kasvata generoitujen kalojen määrää yhdellä
   // ***
+  
+  if(fish.color == "blue") { console.log("kala \(" + fish.id + "\) on sininen")}
 }
+// ***
 
-// Lisää uusi kalaobjekti kalalistaan
-function addFish(id, position, height, level, color, speed) {
-  var fish = {
-    id: id,
-    position: position,
-    height: height,
-    level: level,
-    color: color,
-    speed: speed
-  };
-  fishList.push(fish);
+// *** Lisätty ChatGPT'n luomaa koodia
+function checkCollision(playerFish, fish) {
+  // Tarkista, osuvatko kalojen rajat toisiinsa
+  if (
+    playerFish.positionX < fish.positionX + fish.width &&
+    playerFish.positionX + playerFish.width > fish.positionX &&
+    playerFish.positionY < fish.positionY + fish.height &&
+    playerFish.positionY + playerFish.height > fish.positionY
+  ) {
+    return true; // Osuvat yhteen
+  }
+
+  return false; // Eivät osu yhteen
 }
-
-// Alusta Canvas-elementti
-// TODO tiedoston alusta löytyy saman muuttujat, pitäisikö tuplat poistaa?
-// var canvas = document.getElementById("game-canvas");
-// var ctx = canvas.getContext("2d");
+// ***
 
 // Päivittää pelitapahtumat ja liikuttaa kaloja
 function updateGame() {
-  // Tyhjennä canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  // NOTICE funktio kutsu lisätty
+  renderGame(fishList, playerFish)
+  
   // Päivitä pelaajan kalaa
-  ctx.fillStyle = playerFish.color;
+  // ctx.fillStyle = playerFish.color;
   // NOTICE kalan kokoa muutettu
-  ctx.fillRect(0, playerFish.position, 50, 30);
+  // ctx.fillRect(0, playerFish.position, 50, 30);
 
   // Päivitä muut kalaobjektit
   for (var i = 0; i < fishList.length; i++) {
     var fish = fishList[i];
-	// NOTICE kalan kulkusuuntaa muutettu.
-    fish.position += fish.level * fish.speed * 2; // Muuta kalan liikkumisnopeutta muuttamalla kerrointa
-
-    // Tarkista, osuuko pelaajan kala muihin kaloihin
-    /* if (fish.position <= 60 && fish.position >= 20 && fish.level <= playerFish.level) {
-      console.log("Pelaajan kala osui kalaan " + fish.id + "!");
-      // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
-    } */
+	// NOTICE Kalan "fish.level" ominaisuus vaihdettu pelin perus nopeuteen "normalSpeed"
+	fish.positionX -= normalSpeed * fish.speed * 2;
 	
 	// Tarkista, osuuko pelaajan kala muihin kaloihin
-    if (
-      // NOTICE arvoja säädetty jotta tunnistetaan osuminen paremmin, mikäli ns. kalojen päät ovat ohittaneet toisensa, kumpikaan kala ei syö toista.
-      fish.position <= 560 && // Kala on pelaajan kalan lähellä vaakasuunnassa
-      fish.position >= 550 && // Kala on pelaajan kalan lähellä vaakasuunnassa
-      fish.height <= playerFish.position + 30 && // Kala on pelaajan kalan korkeuden alueella
-      fish.height + 30 >= playerFish.position && // Kala on pelaajan kalan korkeuden alueella
-      fish.level <= playerFish.level // Kala on pelaajan tasoa pienempi tai yhtä suuri
-    ) {
+	// NOTICE alkuperäinen törmäys tarkastus vaihdettu funktio kutsuun
+    if (checkCollision(playerFish, fish)) {
       console.log("Pelaajan kala osui kalaan " + fish.id + "!");
       // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
 	  // *** Lisätty ChatGPT'n luomaa koodia
@@ -211,7 +219,6 @@ function updateGame() {
 	  // ***
 	  
 	  // *** Lisätty ChatGPT'n luomaa koodia
-	  // TODO Myöhempä käyttöä varten
       } else if (fish.color === "blue") {
         console.log("Pelaaja sai kolme pistettä kuplasta!");
         score += 3; // Lisätään pistemäärään kolme
@@ -231,11 +238,6 @@ function updateGame() {
 	  document.getElementById("score-display").textContent = score;
 	  // ***
     }
-
-    // Piirrä kala
-    ctx.fillStyle = fish.color;
-	// NOTICE kalan kokoa muutettu
-    ctx.fillRect(canvas.width - fish.position, fish.height, 50, 30);
   }
 
   // Generoi uusi kala satunnaisesti
@@ -243,9 +245,6 @@ function updateGame() {
   if (Math.random() < 0.013) { // Voit säätää generointitiheyttä muuttamalla lukua
     generateFish();
   }
-
-  // Kutsu updateGame-funktiota uudelleen päivittämään peli
-  // *X* requestAnimationFrame(updateGame);
   /// ***
   // Tarkista, onko peli päättynyt
   if (!gameOver) {
@@ -256,21 +255,6 @@ function updateGame() {
   }
   // ***
 }
-
-/* DEBUG
-// Liikuta pelaajan kalaa pystysuunnassa
-function movePlayerFish(event) {
-  var keyCode = event.keyCode;
-  if (keyCode === 38) { // Ylöspäin
-    playerFish.position -= 10;
-  } else if (keyCode === 40) { // Alaspäin
-    playerFish.position += 10;
-  }
-}
-
-// Kuuntele nuolinäppäimiä pelaajan kalan liikuttamiseksi
-document.addEventListener("keydown", movePlayerFish);
-*/
 
 // *** Lisätty ChatGPT'n luomaa koodia
 function startMoving(direction) {
@@ -311,23 +295,21 @@ document.addEventListener("keyup", function (event) {
   }
 });
 
+// NOTICE Muutettu "playerFish.position" viittaus muotoon "playerFish.positionY" 
 function updatePlayerFishPosition(direction) {
   // Päivitä pelaajan kalan sijaintia haluttuun suuntaan
   if (direction === "up") {
-    playerFish.position -= playerFish.speed;
+    playerFish.positionY -= playerFish.speed;
   } else if (direction === "down") {
-    playerFish.position += playerFish.speed;
+    playerFish.positionY += playerFish.speed;
   }
 
   // Varmista, että pelaajan kala pysyy pelialueella
-  if (playerFish.position < playerFish.height / 2) {
-    playerFish.position = playerFish.height / 2;
-  } else if (playerFish.position > gameHeight - playerFish.height / 2) {
-    playerFish.position = gameHeight - playerFish.height / 2;
+  if (playerFish.positionY < playerFish.height / 2) {
+    playerFish.positionY = playerFish.height / 2;
+  } else if (playerFish.positionY > gameHeight - playerFish.height / 2) {
+    playerFish.positionY = gameHeight - playerFish.height / 2;
   }
-  // Piirrä pelaajan kala päivitettyyn sijaintiin
-  // NOTICE funktio kutsu poistettu käytöstä
-  // drawPlayerFish();
 }
 // ***
 
