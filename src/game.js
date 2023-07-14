@@ -1,10 +1,20 @@
 /// *** Lisätty ChatGPT'n luomaa koodia
-var gameWidth = canvas.width;
-var gameHeight = canvas.height;
+// var gameWidth = canvas.width;
+// var gameHeight = canvas.height;
 /// ***
+
+const gameVersion = "v0.4.0"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
+/// ***
+
+/// *** Lisätty ChatGPT'n luomaa koodia
+let gameDifficulty = 0;
+
+// Määritä enimmäiskalatilanne peliruudulla
+// NOTICE const alkuliite muutettu, jotta pelin vaikeutumisen yhteydessä ruudussa olevien kalojen määrää voidaan lisätä
+let maxFishCount = 5; // Esimerkki: Enimmillään ruudulla voi olla 5 kalaa samanaikaisesti
 /// ***
 
 /// *** Lisätty ChatGPT'n luomaa koodia
@@ -15,7 +25,7 @@ var gameOver = false; // Alustetaan peli lopetetuksi
 var score = 0; // Alustetaan pistemäärä nollaksi
 /// ***
 
-/// NOTICE lisätty muuttuja, johon ChatGPT on viitannut luomassaan koodissa
+// NOTICE lisätty muuttuja, johon ChatGPT on viitannut luomassaan koodissa
 normalSpeed = 1
 
 // *** Lisätty ChatGPT'n luomaa koodia
@@ -45,7 +55,10 @@ var playerFish = {
 // Luo uuden kalalistan, johon lisätään muut kalaobjektit
 var fishList = [];
 
-
+// NOTICE funktio lisätty ChatGPT'n viittauksen perusteella
+function getVersion() {
+	return gameVersion
+}
 
 // *** Lisätty ChatGPT'n luomaa koodia
 // Aloita peli
@@ -152,7 +165,36 @@ function generateFish() {
   fishCount++; // Kasvata generoitujen kalojen määrää yhdellä
   // ***
   
-  if(fish.color == "blue") { console.log("kala \(" + fish.id + "\) on sininen")}
+  // *** Lisätty ChatGPT'n luomaa koodia
+  // Päivitä pelin vaikeustaso, kun kaloja on generoitu 25 lisää
+  if (fishCount % 25 === 0) {
+    updateGameDifficulty();
+  }
+  // ***
+}
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// Määritä pistemäärärajat eri vaikeustasoille
+const difficultyThresholds = {
+  1: 10, // Esimerkki: 10 pistettä vaaditaan vaikeustason 1 saavuttamiseen
+  2: 25, // Esimerkki: 20 pistettä vaaditaan vaikeustason 2 saavuttamiseen
+  3: 40  // Esimerkki: 30 pistettä vaaditaan vaikeustason 3 saavuttamiseen
+};
+
+// Päivitä pelin vaikeustaso ja pelinopeus pelaajan pisteiden perusteella
+function updateGameDifficulty(score) {
+  // Tarkista, onko saavutettu uusi vaikeustaso
+  for (const difficultyLevel in difficultyThresholds) {
+    if (score >= difficultyThresholds[difficultyLevel] && difficultyLevel > gameDifficulty) {
+      // Päivitä vaikeustaso ja pelinopeus
+	  // NOTICE muuteettu nostamaan vaikeus tasoa
+      gameDifficulty += 1 // = parseInt(difficultyLevel);
+      normalSpeed += 0.5; // Esimerkki: Kasvata pelinopeutta 0.5 yksikköä uutta vaikeustasoa kohti
+      console.log(`Uusi vaikeustaso: ${gameDifficulty}`);
+      break; // Poistu silmukasta, kun ensimmäinen uusi vaikeustaso on löytynyt
+    }
+  }
 }
 // ***
 
@@ -172,6 +214,47 @@ function checkCollision(playerFish, fish) {
 }
 // ***
 
+// *** Lisätty ChatGPT'n luomaa koodia
+// Tallenna tulosennätys
+function saveHighScore(score) {
+  const highScore = localStorage.getItem('highScore');
+  if (!highScore || score > highScore) {
+    localStorage.setItem('highScore', score);
+  }
+}
+
+// Tarkista tulosennätys
+function checkHighScore(score) {
+  const highScore = localStorage.getItem('highScore');
+  if (!highScore || score > highScore) {
+    return score;
+  }
+  return highScore;
+}
+
+function getHighScore() {
+  return localStorage.getItem('highScore') || 0;
+}
+
+// Päivitä HTML-elementti ennätyspisteillä
+function updateHighScoreElement() {
+  const highScoreElement = document.getElementById('high-score');
+  const highScore = getHighScore();
+  highScoreElement.textContent = `${highScore}`;
+}
+
+// Pelin päätyttyä tarkista tulosennätys
+// NOTICE funktion nimi muutettu sekannuksen välttämiseksi
+function updateGameOver() {
+  // NOTICE funktio kutsu muutettu muuttuja kutsuksi	
+  const finalScore = score; // Oletetaan, että game.js-tiedostossa on metodi getScore() palauttamaan pelaajan pisteet
+  const highScore = checkHighScore(finalScore);
+  saveHighScore(highScore);
+  updateHighScoreElement();
+  // Muut pelin lopettamiseen liittyvät toimenpiteet...
+}
+// ***
+
 // Päivittää pelitapahtumat ja liikuttaa kaloja
 function updateGame() {
   // NOTICE funktio kutsu lisätty
@@ -187,6 +270,14 @@ function updateGame() {
     var fish = fishList[i];
 	// NOTICE Kalan "fish.level" ominaisuus vaihdettu pelin perus nopeuteen "normalSpeed"
 	fish.positionX -= normalSpeed * fish.speed * 2;
+	
+	// *** Lisätty ChatGPT'n luomaa koodia
+	// Tarkista, onko kala edennyt pelialueen reunan ohi
+    if (fish.positionX < -fish.width) {
+      // Poista kala listalta
+      fishList.splice(i, 1);
+	}
+	// ***
 	
 	// Tarkista, osuuko pelaajan kala muihin kaloihin
 	// NOTICE alkuperäinen törmäys tarkastus vaihdettu funktio kutsuun
@@ -239,10 +330,16 @@ function updateGame() {
 	  // ***
     }
   }
+  
+  // *** Lisätty ChatGPT'n luoma koodia
+  // NOTICE muuttuja viittausta muokattu vastaamaan aiempaa koodia
+  updateGameDifficulty(score);
+  // ***
 
   // Generoi uusi kala satunnaisesti
   // NOTICE generointi tiheyttä muutettu
   if (Math.random() < 0.013) { // Voit säätää generointitiheyttä muuttamalla lukua
+	//  && fishList.length < maxFishCount ChatGPT'n luomaa ominaisuutta ei vielä lisätty
     generateFish();
   }
   /// ***
@@ -252,6 +349,7 @@ function updateGame() {
   } else {
 	// NOTICE drawGameOver metodin paikkaa muutettu
 	drawGameOver(); 
+	updateGameOver()
   }
   // ***
 }
@@ -315,5 +413,7 @@ function updatePlayerFishPosition(direction) {
 
 // *** Lisätty ChatGPT'n luomaa koodia
 // Kutsu drawGameOver-funktiota pelin alussa
+// NOTICE "updateHighScore" -funktio kutsu lisätty
+updateHighScoreElement()
 drawStartGame();
 // ***

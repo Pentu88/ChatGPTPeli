@@ -1,6 +1,15 @@
 # Kalapeli
 
-## v0.3.0
+## v0.4.0
+
+### Uusia ominaisuuksia
+- Peli alkaa vaikeutua pelin kulun myötä
+- Ruudusta pois uineet kalat poistetaan pelistä, eivätkä ne päivity enää turhaan
+- Pelialueelle lisätty hiekka pohja
+- Ruutuun lisätty tieto pelin versiosta
+- Ennätyksen seuranta
+
+## [v0.3.0](https://github.com/Pentu88/ChatGPTPeli/tree/61072c4023107518d30854019b1af42918fa7571)
 
 ### Uusia ominaisuuksia
 - Uusi elementti, kuplat

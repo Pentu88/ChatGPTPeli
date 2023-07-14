@@ -9,6 +9,25 @@ function drawBackground(ctx, canvasWidth, canvasHeight) {
   // Piirrä pelialueen tausta
   ctx.fillStyle = "lightblue"; // Aseta taustan väri
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  
+  // Piirrä pohjan hiekanvärisen alueen alareuna
+  // NOTICE "context" muuttuja viittaukset vaihdettu muotoon "ctx"
+  ctx.fillStyle = "sandybrown";
+  ctx.fillRect(0, gameHeight - 10, gameWidth, 10);
+  
+  // NOTICE lisätty viittaus funktioon
+  drawGameVersion();
+}
+
+// NOTICE pelin versionumeron piirtämisestä tehty funktio
+// NOTICE piirtämistä fixattu hieman, väri, fontti koko ja kohta
+function drawGameVersion() {
+  // Piirrä pelin versionumero
+  const version = getVersion(); // Oletetaan, että game.js-tiedostossa on metodi getVersion() palauttamaan versionumeron
+  // NOTICE "context" muuttuja viittaukset vaihdettu muotoon "ctx"
+  ctx.fillStyle = "Black";
+  ctx.font = "10px Arial";
+  ctx.fillText(version, gameWidth - 30, 10);
 }
 
 // NOTICE drawGameStart ja drawGameOver funktiot siirretty game.js -tiedostosta
@@ -135,6 +154,7 @@ function drawFish(fish){
     ctx.fillRect(canvas.width - fish.position, fish.height, 50, 30);
 }
 
+// *** Lisätty ChatGPT'n luomaa koodia
 // Piirtämiseen liittyvä funktio
 function renderGame(fishList, playerFish) {
   // Tyhjennä canvas
