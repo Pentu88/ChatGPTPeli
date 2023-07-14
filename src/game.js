@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.4.0"
+const gameVersion = "v0.4.1"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -70,6 +70,11 @@ function startGame() {
   // *** Lisätty ChatGPT'n luomaa koodia
   fishCount = 0; // Nollaa generoitujen kalojen määrä
   // ***
+  
+  // NOTICE lisätty nollauksia
+  gameDifficulty = 0;
+  maxFishCount = 5;
+  normalSpeed = 1;
   
   // *** Lisätty ChatGPT'n luomaa koodia
   // Palauta pelaajan kalan position alkuperäiseen arvoon

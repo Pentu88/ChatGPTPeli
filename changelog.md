@@ -1,6 +1,11 @@
 # Kalapeli
 
-## v0.4.0
+## 0.4.1
+
+### Bugeja korjattu
+- muuttujien nollaus ennen uutta peliä (normalSpeed, gameDifficulty, maxFishCount)
+
+## [v0.4.0](https://github.com/Pentu88/ChatGPTPeli/tree/9e9f60e91f2db1be53e98e16a00bb0a194732f4b)
 
 ### Uusia ominaisuuksia
 - Peli alkaa vaikeutua pelin kulun myötä
