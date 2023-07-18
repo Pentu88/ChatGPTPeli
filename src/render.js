@@ -27,7 +27,7 @@ function drawGameVersion() {
   // NOTICE "context" muuttuja viittaukset vaihdettu muotoon "ctx"
   ctx.fillStyle = "Black";
   ctx.font = "10px Arial";
-  ctx.fillText(version, gameWidth - 30, 10);
+  ctx.fillText(version, gameWidth - 20, 10);
 }
 
 // NOTICE drawGameStart ja drawGameOver funktiot siirretty game.js -tiedostosta
@@ -83,7 +83,8 @@ function drawPlayerFish(playerFish) {
   ctx.fillStyle = playerFish.color; // Aseta pelaajan kalan väri (esim. oranssi)
   ctx.fillRect(
     playerFish.positionX,
-    playerFish.positionY - playerFish.height / 2,
+	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
+    playerFish.positionY, // - playerFish.height / 2,
     playerFish.width,
     playerFish.height
   );
@@ -97,7 +98,8 @@ function drawRedFish(fish) {
   ctx.fillRect(
 	// NOTICE poistettu kalan koon vähentäminen X sijainnista
     fish.positionX,
-    fish.positionY - fish.height / 2,
+	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
+    fish.positionY, // - fish.height / 2,
     fish.width,
     fish.height
   );
@@ -109,7 +111,8 @@ function drawYellowFish(fish) {
   ctx.fillRect(
     // NOTICE poistettu kalan koon vähentäminen X sijainnista
     fish.positionX,
-    fish.positionY - fish.height / 2,
+	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
+    fish.positionY, // - fish.height / 2,
     fish.width,
     fish.height
   );
@@ -120,8 +123,8 @@ function drawBubble(bubble) {
   ctx.fillStyle = "blue";
   ctx.beginPath();
   ctx.arc(
-    bubble.positionX,
-    bubble.positionY, // TODO pitäisikö korkeus muutta samankaltaiseksi kuin muissa kaloissa? fish.height / 2
+    bubble.positionX + (bubble.width / 2),
+    bubble.positionY + bubble.height / 2, // NOTICE kupla siirretty korkeus suunnasssa (jotta törmäys voidaan laskea oikein)
 	// NOTICE "radius" ominaisuus muutettu "height" muotoon
     bubble.height / 2,
     0,

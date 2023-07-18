@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.4.1"
+const gameVersion = "v0.4.2"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -115,12 +115,6 @@ function getRandomColor() {
 // *** Lisätty ChatGPT'n luomaa koodia
 // NOTICE yhdistelty aikaisemmista versioista sopivammaksi
 function generateFish() {
-  // NOTICE kalan aloitus kohtaa muutettu
-  // const positionX = 0; // Aseta kalan alkusijainti pelialueen oikeaan reunaan
-  const positionX = gameWidth;
-  // const positionY = Math.random() * gameHeight; // Arvo satunnainen sijainti pystysuunnassa
-  var positionY = Math.floor(Math.random() * 240) + 20; // Satunnainen korkeus (20-260); // Arvo satunnainen sijainti pystysuunnassa
-
   // NOTICE arvoja muutettu
   let width = 40; // Aseta kalan leveys
   let height = 20; // Aseta kalan korkeus
@@ -143,9 +137,14 @@ function generateFish() {
     height = 40;
   } else if (color === "red") {
     // Punaisille kaloille suurempi koko
-    width = 55;
-    height = 35;
+    width = 56;
+    height = 36;
   }
+  
+  const positionX = gameWidth;
+  //NOTICE Arvontaa muutettu kalan piirron muutoksen vuoksi + sijanti tiedot siirretty myöhemmälle kalojen vaihtelevan koon vuoksi
+  const positionY = Math.floor(Math.random() * (gameHeight - height)); // Satunnainen korkeus (20-260); // Arvo satunnainen sijainti pystysuunnassa
+
   // ***
   
   const fish = {
@@ -204,12 +203,13 @@ function updateGameDifficulty(score) {
 // ***
 
 // *** Lisätty ChatGPT'n luomaa koodia
-function checkCollision(playerFish, fish) {
+function checkCollision(playerFish, fish) {	
   // Tarkista, osuvatko kalojen rajat toisiinsa
+  // NOTICE törmäys tarkastusta hienosäädetty
   if (
     playerFish.positionX < fish.positionX + fish.width &&
     playerFish.positionX + playerFish.width > fish.positionX &&
-    playerFish.positionY < fish.positionY + fish.height &&
+    playerFish.positionY < fish.positionY + fish.height  &&
     playerFish.positionY + playerFish.height > fish.positionY
   ) {
     return true; // Osuvat yhteen
@@ -262,14 +262,6 @@ function updateGameOver() {
 
 // Päivittää pelitapahtumat ja liikuttaa kaloja
 function updateGame() {
-  // NOTICE funktio kutsu lisätty
-  renderGame(fishList, playerFish)
-  
-  // Päivitä pelaajan kalaa
-  // ctx.fillStyle = playerFish.color;
-  // NOTICE kalan kokoa muutettu
-  // ctx.fillRect(0, playerFish.position, 50, 30);
-
   // Päivitä muut kalaobjektit
   for (var i = 0; i < fishList.length; i++) {
     var fish = fishList[i];
@@ -306,7 +298,6 @@ function updateGame() {
 		
 		// *** Lisättiin ChatGPT'n luomaa koodia
 		// Poista kala fishList-listalta
-		// TODO poistettavan kalan lähdettä muutettu
         var fishIndex = fishList.indexOf(fish);
         if (fishIndex !== -1) {
           fishList.splice(fishIndex, 1);
@@ -335,6 +326,9 @@ function updateGame() {
 	  // ***
     }
   }
+  
+  // NOTICE funktio kutsu lisätty
+  renderGame(fishList, playerFish)
   
   // *** Lisätty ChatGPT'n luoma koodia
   // NOTICE muuttuja viittausta muokattu vastaamaan aiempaa koodia
@@ -408,10 +402,11 @@ function updatePlayerFishPosition(direction) {
   }
 
   // Varmista, että pelaajan kala pysyy pelialueella
-  if (playerFish.positionY < playerFish.height / 2) {
-    playerFish.positionY = playerFish.height / 2;
-  } else if (playerFish.positionY > gameHeight - playerFish.height / 2) {
-    playerFish.positionY = gameHeight - playerFish.height / 2;
+  // NOTICE pelaajan kalan liikettä säädetty piirrossa tehdyn muutoksen vuoksi
+  if (playerFish.positionY < 1) {
+    playerFish.positionY = 1;
+  } else if (playerFish.positionY > gameHeight - playerFish.height) {
+    playerFish.positionY = gameHeight - playerFish.height;
   }
 }
 // ***

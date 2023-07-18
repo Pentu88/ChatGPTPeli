@@ -1,6 +1,11 @@
 # Kalapeli
 
-## 0.4.1
+## 0.4.2
+
+### Bugeja korjattu
+- kalojen törmöyksen testaamiseen liittyviä virheitä korjattu
+
+## [0.4.1](https://github.com/Pentu88/ChatGPTPeli/tree/cc158d3f5065fd8e153f9dbe909ceecdfa7b727d)
 
 ### Bugeja korjattu
 - muuttujien nollaus ennen uutta peliä (normalSpeed, gameDifficulty, maxFishCount)
