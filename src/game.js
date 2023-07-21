@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.4.2"
+const gameVersion = "v0.4.3"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -207,7 +207,9 @@ function checkCollision(playerFish, fish) {
   // Tarkista, osuvatko kalojen rajat toisiinsa
   // NOTICE törmäys tarkastusta hienosäädetty
   if (
-    playerFish.positionX < fish.positionX + fish.width &&
+    // playerFish.positionX < fish.positionX + fish.width && // alkuperäinen
+	// NOTICE kalojen törmäystä säädetty
+    playerFish.positionX + playerFish.width / 2 < fish.positionX + fish.width / 2 &&
     playerFish.positionX + playerFish.width > fish.positionX &&
     playerFish.positionY < fish.positionY + fish.height  &&
     playerFish.positionY + playerFish.height > fish.positionY

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Demon Runner</title>
+  <style>
+    #game-container {
+      display: flex;
+    }
+
+    #game-canvas {
+      border: 1px solid black;
+    }
+
+    #game-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #game-restart-button {
+      width: 100px;
+      height: 40px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Demon Runner</h1>
+  
+  <!-- *** Lisätty ChatGPT'n luomaa koodia -->
+  <!-- NOTICE tekstiä muutettu-->
+  <div id="header">
+  <span>Pisteet: <span id="score-display">0</span></span>
+  <span>Highscore:<span id="high-score">0</span></span>
+</div>
+  <!-- *** -->
+  
+  <div id="game-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+  
+  <!-- Lisää render.js-tiedosto -->
+  <script src="render.js"></script>	
+  
+  <script src="game.js"></script>
+</body>
+</html>

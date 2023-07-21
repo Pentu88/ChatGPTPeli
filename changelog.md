@@ -1,6 +1,14 @@
 # Kalapeli
 
-## 0.4.2
+## 0.4.3
+
+### Uutta
+- pelin html-tiedoston nimi muutettu
+
+### Bugeja korjattu
+- Kalojen törmäys herkkyyttä säädetty (pyrstökontaktia ei enää lasketa)
+ 
+## [0.4.2](https://github.com/Pentu88/ChatGPTPeli/tree/11afa2d7561b6002b74eb08f297d15a4515d88ec)
 
 ### Bugeja korjattu
 - kalojen törmöyksen testaamiseen liittyviä virheitä korjattu

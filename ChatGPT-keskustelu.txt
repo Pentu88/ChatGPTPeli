@@ -3136,3 +3136,30 @@ Copy code
   <span id="high-score">Ennätys: 0</span>
 </div>
 Tässä oletetaan, että otsikkopalkki on sisällytetty <div>-elementtiin, jonka id on "header". "Pisteet" tekstin ja pistenäytön span-elementtiin on annettu id "score-display". "Highscore" elementtiin on annettu id "high-score", joka päivitetään tulosennätyksen mukaisesti.
+
+
+
+
+
+User
+Minulla on html pohjainen peli ja olen muuttanut pelin html -tiedoston nimen muotoon index.html. Loisitko minulle sivun (vanhan game.html'n tilalle), joka kertoo että peli on siirretty, sekä linkin uudelle pelisivulle. 
+ChatGPT
+Tässä on esimerkki sivusta, joka kertoo, että peli on siirretty ja sisältää linkin uudelle pelisivulle:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peli on siirretty</title>
+</head>
+<body>
+  <h1>Peli on siirretty</h1>
+  <p>Olemme siirtäneet pelin uudelle sivulle.</p>
+  <p>Pääset pelaamaan peliä uudessa osoitteessa.</p>
+  <a href="index.html">Siirry uudelle pelisivulle</a>
+</body>
+</html>
+Tämä sivu näyttää otsikon "Peli on siirretty" ja sisältää lyhyen viestin sekä linkin "Siirry uudelle pelisivulle". Linkin URL on asetettu "index.html", joka on uusi pelisivusi. Voit käyttää tätä koodia luodaksesi oman sivunsi, korvaa tarvittaessa URL-osoite oikealla sivulla.
