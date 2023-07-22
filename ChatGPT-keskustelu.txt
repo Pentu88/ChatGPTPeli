@@ -5,7 +5,6 @@ Pelissä olisi maailmana poikkileikkaus virtaavasta vaalean sinisestä joesta, j
 Joesa on muitakin kaloja, jotka liikkuvat pelialueen oikeasta reunasta vasemmalle.  Kalasta pitäisi luoda monistettava objecti, jonka ominaisuuksia olisi ainakin  id, sijainti ja taso. 
 
 Pelitapahtumia pitää päivittää kokoajan jotta kalat etenevät.
-
 ChatGPT
 Moro! Voin auttaa sinua luomaan HTML- ja JavaScript-koodin demon runner -tyyppiseen peliin. Tässä on yksinkertainen koodiesimerkki, joka toteuttaa pelin kuvailemasi idean mukaisesti:
 
@@ -3844,3 +3843,146 @@ Copy code
 Yllä olevassa esimerkissä canvas-container ottaa 60% näytön leveydestä oletusasetuksena, kun näyttö on suurempi kuin 768 pikseliä. Kun näyttö on 768 pikseliä tai pienempi, sen leveys muuttuu 90% näytön leveydestä. Tämä mahdollistaa sivun mukautumisen pienempiin näyttöihin, kuten mobiililaitteisiin.
 
 Vastaavasti voit muokata muita elementtejä ja niiden sijaintia media query -sääntöjen avulla tarpeen mukaan. Näin voit optimoida sivun ulkoasun ja käytettävyyden eri laitteille.
+
+
+
+
+User
+Tätä ei pysty pelaamaan puhelimella nyt. Saisiko sivulle lisättyä vielä tyylikkäät napit, jotka toimisivat mobiililaitteella nuolinappien korvikkeena
+ChatGPT
+Tottahan toki! Voimme lisätä sivulle mobiiliystävälliset napit, jotka korvaavat nuolinäppäimet. Käytämme tähän tarkoitukseen HTML:n button-elementtiä ja CSS:ää napin tyyliin ja sijoitteluun. Alla on esimerkki, kuinka voit lisätä napit pelisivulle:
+
+HTML:
+
+html
+Copy code
+<div id="controls">
+  <button id="move-left" class="control-button">←</button>
+  <button id="move-right" class="control-button">→</button>
+  <button id="move-up" class="control-button">↑</button>
+  <button id="move-down" class="control-button">↓</button>
+</div>
+CSS:
+
+css
+Copy code
+#controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.control-button {
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Lisätään hover-efekti napille */
+.control-button:hover {
+  background-color: #0056b3;
+}
+Tässä lisäämme uuden <div>-elementin, jolla on id "controls". Tähän <div>-elementtiin lisätään neljä button-elementtiä, joilla on id:t "move-left", "move-right", "move-up" ja "move-down". Nämä napit toimivat mobiililaitteilla pelaajan ohjausnappuloina.
+
+Lisäksi käytämme CSS:ää muotoilemaan napit sopivan kokoisiksi ja tyylikkäiksi. display: flex; ja justify-content: space-around; asettavat napit vaakasuoraan ja jakavat tilaa tasaisesti, ja align-items: center; keskittää napit pystysuunnassa.
+
+Kokeile lisätä nämä koodinpätkät pelisivulle ja tarkista, miten napit toimivat mobiililaitteilla. Voit säätää napin kokoja, värejä ja muita ominaisuuksia tarpeen mukaan.
+
+
+
+
+User
+Päivitetään näitä vielä siten että toimivat, kuten näppäimistön nuoli napit. Tarvitsen vain näppäimet ylös ja alas 
+ChatGPT
+Selvä! Voimme päivittää napit toimimaan kuten näppäimistön nuolinäppäimet ylös ja alas. Käytämme JavaScriptiä kuuntelemaan napin painalluksia ja käsittelemään pelaajan liikkumista sen perusteella. Lisää seuraava JavaScript-koodi pelisivullesi:
+
+HTML:
+
+html
+Copy code
+<div id="controls">
+  <button id="move-up" class="control-button">↑</button>
+  <button id="move-down" class="control-button">↓</button>
+</div>
+JavaScript:
+
+js
+Copy code
+// Pelaajan liikkumissuunta
+let moveDirection = 0; // 0: ei liikettä, 1: ylös, -1: alas
+
+// Kuunnellaan napin painalluksia
+document.getElementById('move-up').addEventListener('mousedown', function() {
+  moveDirection = 1; // Pelaaja liikkuu ylös kun painetaan
+});
+document.getElementById('move-up').addEventListener('mouseup', function() {
+  moveDirection = 0; // Pelaaja pysähtyy kun päästetään nappi
+});
+
+document.getElementById('move-down').addEventListener('mousedown', function() {
+  moveDirection = -1; // Pelaaja liikkuu alas kun painetaan
+});
+document.getElementById('move-down').addEventListener('mouseup', function() {
+  moveDirection = 0; // Pelaaja pysähtyy kun päästetään nappi
+});
+
+// Pelin pääsilmukassa päivitä pelaajan liikkuminen
+function updateGame() {
+  // Päivitä pelaajan sijainti liikkumissuunnan perusteella
+  if (moveDirection === 1) {
+    playerFish.positionY -= playerFish.speed;
+  } else if (moveDirection === -1) {
+    playerFish.positionY += playerFish.speed;
+  }
+
+  // Muut pelin päivitystoiminnot...
+
+  // Kutsu pelin päivitys uudelleen
+  requestAnimationFrame(updateGame);
+}
+
+// Käynnistä pelin päivitys
+updateGame();
+Tässä koodissa kuuntelemme "mousedown" ja "mouseup" -tapahtumia ylös- ja alasnapeille. Kun pelaaja painaa ylöspäin-nappia, asetamme "moveDirection" -muuttujan arvoksi 1, ja kun pelaaja painaa alaspäin-nappia, asetamme sen arvoksi -1. Kun pelaaja päästää napin, "moveDirection" asetetaan takaisin nollaksi, jolloin pelaaja pysähtyy.
+
+Päivitämme "updateGame" -funktiota siten, että pelaajan sijainti päivitetään "moveDirection" -muuttujan perusteella. Jos "moveDirection" on 1, pelaaja liikkuu ylös, ja jos se on -1, pelaaja liikkuu alas.
+
+Tällä tavalla pelaaja voi nyt liikuttaa kala-hahmoaan ylös ja alas nappeja painamalla, kuten näppäimistön nuolinäppäimillä. Voit muokata napin tyyliä ja sijaintia CSS:llä sopimaan paremmin sivun ulkoasuun.
+
+
+
+
+User
+Seuraavaksi haluaisin lisätä vielä sivulle head osioon sopivat tagit jotta sivua linkittäessä sosiaalisessa mediassa (ainakin facebook ja whatsapp tukee jotain tällaista) näkyisi otsikko ja kuva. 
+ChatGPT
+Sosiaalisen median linkkien esikatseluun voit lisätä Open Graph -metatietoja sivun <head>-osioon. Tämä auttaa sosiaalisen median alustoja näyttämään oikean otsikon, kuvan ja kuvauksen, kun sivuasi jaetaan.
+
+Lisää seuraavat Open Graph -metatiedot <head>-osioon pelisivullesi:
+
+html
+Copy code
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <meta property="og:title" content="Kalapeli">
+  <meta property="og:description" content="Pisteitä kerätään syömällä keltasia kaloja, 1p kalasta sekä kuplia, 3p kuplasta. Mutta punaisia kaloja pitää varoa">
+  <meta property="og:image" content="URL_tähän_kuvasi.png"> <!-- Vaihda URL kuvasi URL:ksi -->
+  <!-- Lisää muita Open Graph -metatietoja tarvittaessa -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Sivun sisältö tässä -->
+</body>
+</html>
+Huomaa, että "og:image" -kohdassa sinun tulee korvata "URL_tähän_kuvasi.png" kuvasi osoitteella. Tämä kuva näkyy esikatselukuvana, kun sivuasi jaetaan sosiaalisessa mediassa.
+
+Voit lisätä muita Open Graph -metatietoja tarpeen mukaan, kuten sivun URL:n, sivun tekijän, jne. Tällä tavoin sosiaalisen median alustat näyttävät oikean kuvauksen, otsikon ja esikatselukuvan, kun sivuasi jaetaan.

@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalapeli</title>
+  <meta property="og:title" content="Kalapeli">
+  <meta property="og:description" content="Pisteitä kerätään syömällä keltasia kaloja, 1p kalasta sekä kuplia, 3p kuplasta. Mutta punaisia kaloja pitää varoa">
+  <meta property="og:image" content="kalapeli.png">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -43,13 +46,39 @@
       padding: 10px;
       margin-top: 10px;
     }
+	
+  #controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .control-button {
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Lisätään hover-efekti napille */
+  .control-button:hover {
+    background-color: #0056b3;
+  }
 	@media (max-width: 768px) {
       /* Näytön leveys on 768px tai pienempi */
       #canvas-container {
-        width: 90%;
+        width: 100%;
+      }
+	  #header {
+        width: 100%;
       }
 	  #game-canvas {
-        width: 90%;
+        width: 95%;
       } 
     }
   </style>
@@ -61,6 +90,11 @@
       <span>Ennätys: <span id="high-score">0</span></span>
     </div>
     <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+  
+  <div id="controls">
+    <button id="move-up" class="control-button">↑</button>
+    <button id="move-down" class="control-button">↓</button>
   </div>
 
   <div id="instructions">

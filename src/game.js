@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.5.1"
+const gameVersion = "v0.5.2"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -411,6 +411,28 @@ function updatePlayerFishPosition(direction) {
     playerFish.positionY = gameHeight - playerFish.height;
   }
 }
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia
+// NOTICE lisätty funktio kutsut jo olemassa oleviin funktioigin
+// Kuunnellaan napin painalluksia
+document.getElementById('move-up').addEventListener('mousedown', function() {
+  // moveDirection = 1; // Pelaaja liikkuu ylös kun painetaan
+  startMoving("up");
+});
+document.getElementById('move-up').addEventListener('mouseup', function() {
+  // moveDirection = 0; // Pelaaja pysähtyy kun päästetään nappi
+  stopMoving();
+});
+
+document.getElementById('move-down').addEventListener('mousedown', function() {
+  // moveDirection = -1; // Pelaaja liikkuu alas kun painetaan
+  startMoving("down");
+});
+document.getElementById('move-down').addEventListener('mouseup', function() {
+  // moveDirection = 0; // Pelaaja pysähtyy kun päästetään nappi
+  stopMoving();
+});
 // ***
 
 // *** Lisätty ChatGPT'n luomaa koodia
