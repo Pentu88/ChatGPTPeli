@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,15 @@
       background-color: #f0f0f0;
       padding: 2vh;
     }
+	@media (max-width: 768px) {
+      /* Näytön leveys on 768px tai pienempi */
+      #canvas-container {
+        width: 90%;
+      }
+	  #header {
+	    width: 90%;
+	  }
+    }
     #game-canvas {
       border: 1px solid black;
     }
@@ -37,6 +46,12 @@
       margin: 2vh auto;
       max-width: 600px;
     }
+	#footer {
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -52,9 +67,13 @@
     <h1>Kalapeli</h1>
     <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
     <p>Varo punaisia kaloja!</p>
-    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea peliin!</p>
   </div>
 
+  <div id="footer">
+    Tämän sivun koodi on luotu <a href="https://openai.com">ChatGPT:n</a> avulla.
+  </div>
+  
   <script src="render.js"></script>
   <script src="game.js"></script>
 </body>

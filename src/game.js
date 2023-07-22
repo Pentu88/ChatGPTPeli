@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.5.0"
+const gameVersion = "v0.5.1"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten

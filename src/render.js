@@ -212,7 +212,7 @@ function drawBubble(bubble) {
   ctx.fillStyle = "blue";
   ctx.beginPath();
   ctx.arc(
-    bubble.positionX + (bubble.width / 2),
+    bubble.positionX + (bubble.width / 4), // piirretään kupla hieman eteen sijainnista, osumisen parantamisen vuoksi 
     bubble.positionY + bubble.height / 2, // NOTICE kupla siirretty korkeus suunnasssa (jotta törmäys voidaan laskea oikein)
 	// NOTICE "radius" ominaisuus muutettu "height" muotoon
     bubble.height / 2,

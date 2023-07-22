@@ -1,8 +1,14 @@
 # Kalapeli
 
-## v0.5.0
+## v0.5.1
 
-## Uutta
+### Bugeja korjattu
+- Kuplan osumis tarkistusta paranneltu
+- HTML -sivulle lisätty viittaus ChatGPT'n avusta pelinkehityksessä
+
+## [v0.5.0](https://github.com/Pentu88/ChatGPTPeli/tree/a82b2701760a3913832461c0e507e7fc5d1fe706)
+
+### Uutta
 - Uudet kalaa muistuttavat hahmot
 - Uusi tyylitelty HTML -sivu
 

@@ -5,6 +5,7 @@ Pelissä olisi maailmana poikkileikkaus virtaavasta vaalean sinisestä joesta, j
 Joesa on muitakin kaloja, jotka liikkuvat pelialueen oikeasta reunasta vasemmalle.  Kalasta pitäisi luoda monistettava objecti, jonka ominaisuuksia olisi ainakin  id, sijainti ja taso. 
 
 Pelitapahtumia pitää päivittää kokoajan jotta kalat etenevät.
+
 ChatGPT
 Moro! Voin auttaa sinua luomaan HTML- ja JavaScript-koodin demon runner -tyyppiseen peliin. Tässä on yksinkertainen koodiesimerkki, joka toteuttaa pelin kuvailemasi idean mukaisesti:
 
@@ -3708,3 +3709,138 @@ Copy code
 </body>
 </html>
 Nyt "header" elementti sijaitsee "canvas" elementin yläpuolella. Voit muuttaa "justify-content" ja "align-items" -ominaisuuksia tarpeen mukaan säätääksesi elementtien tarkkaa sijaintia canvas-containerissa.
+
+
+
+
+User
+Hienoa! Nyt sivu näyttää upealta. Haluasin vielä sivun alareunaan tiedon siitä, että sivun koodi on luotu ChatGPTn avulla, miten tämä onnistuisi parhaiten?
+ChatGPT
+Voit lisätä sivun alareunaan tiedon siitä, että sivun koodi on luotu ChatGPT:n avulla lisäämällä esimerkiksi "footer" elementin sivun loppuun ja antamalla sille haluamasi tekstin. Footer-elementtiä voidaan tyylistää esimerkiksi asettamalla sille taustaväri, tekstiväri ja alareunaan sopiva padding tai marginaali. Päivitetty koodi näyttää tältä:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #canvas-container {
+      position: relative;
+      display: flex;
+      flex-direction: column; /* Aseta sisältämät elementit pystysuuntaan */
+      justify-content: center;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      padding: 2vh;
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #header {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    #instructions {
+      text-align: center;
+      padding: 2vh;
+      margin: 2vh auto;
+      max-width: 600px;
+    }
+    #footer {
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Highscore: <span id="high-score">0</span></span>
+    </div>
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <div id="footer">
+    Tämän sivun koodi on luotu ChatGPT:n avulla.
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Nyt "footer" elementti sisältää tiedon sivun luomisesta ChatGPT:n avulla ja se sijaitsee sivun alareunassa. Voit tietysti muokata footerin tyyliä ja sisältöä haluamallasi tavalla.
+
+
+
+
+User
+Onko tuohon mahdollista saada vielä linkki chatGPT'n kehittäjän sivulle?
+ChatGPT
+Kyllä, voit lisätä "footer" elementtiin linkin ChatGPT:n kehittäjän sivulle. Tämä voidaan tehdä ankkurielementillä (a) ja href-attribuutilla, joka ohjaa käyttäjän ChatGPT:n kehittäjän sivulle. Päivitetyssä koodissa voit lisätä linkin tähän tapaan:
+
+html
+Copy code
+<div id="footer">
+  Tämän sivun koodi on luotu <a href="https://openai.com">ChatGPT:n</a> avulla.
+</div>
+Tämä luo footer-elementtiin linkin, joka vie käyttäjän OpenAI:n sivulle, jossa voi saada lisätietoa ChatGPT:stä ja sen kehittäjistä. Voit tietysti muuttaa href-attribuutin arvon vastaamaan haluamaasi sivua tai URL-osoitetta, jolle haluat linkittää.
+
+
+
+
+User
+Avasin sivun mobiililaitteella ja huomasin, ettei sivu oikein toistu kunnolla. Miten saisin sivun näkymään hyvin sekä mobiililaitteella että tietokoneella
+ChatGPT
+Sivun responsiivisuuden varmistamiseksi voit käyttää CSS:n media query -sääntöjä. Media query -säännöt mahdollistavat tyylin määrittämisen eri näyttölaitteille ja näkymille.
+
+Ensinnäkin, lisää viewport-määritys <head> -osioon, jotta voit varmistaa, että sivu skaalautuu oikein eri näyttöjen kokoille:
+
+html
+Copy code
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Muut meta-tiedot ja linkitykset -->
+</head>
+Sitten voit lisätä media query -sääntöjä CSS-tiedostoon tai <style> -elementtiin, jotta voit muokata sivun asettelua ja tyyliä eri näyttöjen kokoille. Esimerkiksi voit tehdä headerin ja canvas-containerin elementtien sisällön määrittämän leveyden suhteessa näytön leveyteen.
+
+html
+Copy code
+<style>
+  #canvas-container {
+    /* Oletusleveys, kun näyttö on suurempi kuin 768px */
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    /* Näytön leveys on 768px tai pienempi */
+    #canvas-container {
+      width: 90%;
+    }
+  }
+</style>
+Yllä olevassa esimerkissä canvas-container ottaa 60% näytön leveydestä oletusasetuksena, kun näyttö on suurempi kuin 768 pikseliä. Kun näyttö on 768 pikseliä tai pienempi, sen leveys muuttuu 90% näytön leveydestä. Tämä mahdollistaa sivun mukautumisen pienempiin näyttöihin, kuten mobiililaitteisiin.
+
+Vastaavasti voit muokata muita elementtejä ja niiden sijaintia media query -sääntöjen avulla tarpeen mukaan. Näin voit optimoida sivun ulkoasun ja käytettävyyden eri laitteille.
