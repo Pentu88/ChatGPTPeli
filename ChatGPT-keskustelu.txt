@@ -3986,3 +3986,97 @@ Copy code
 Huomaa, että "og:image" -kohdassa sinun tulee korvata "URL_tähän_kuvasi.png" kuvasi osoitteella. Tämä kuva näkyy esikatselukuvana, kun sivuasi jaetaan sosiaalisessa mediassa.
 
 Voit lisätä muita Open Graph -metatietoja tarpeen mukaan, kuten sivun URL:n, sivun tekijän, jne. Tällä tavoin sosiaalisen median alustat näyttävät oikean kuvauksen, otsikon ja esikatselukuvan, kun sivuasi jaetaan.
+
+
+
+
+User
+Aikaisempi HTML -napit (simuloimaan nuoli näppäinten painallusta) ei toimi mobiililaitteellani.  Antamassasi koodissa lisättiin tapahtumakuuntelijat "move-up" ja "move-down" nappien painamiselle ja päästämiselle hiirellä. Lisäsin itse funktio kutsut jo olemassa oleviin funktioihin (joita oikeat näppäinten painalluksetkin kutsuvat). Pitäisikö tämän hiiren tapahtuman toimia myös mobiililaitteella?
+ChatGPT
+Kyllä, jos lisäät tapahtumakuuntelijat napille "touchstart" -tapahtumalle, niin napin painaminen mobiililaitteella toimii. Tämä tapahtuu käyttämällä "ontouchstart" -attribuuttia tai addEventListener-metodia.
+
+Alla on esimerkki HTML-nappien muokkaamisesta toimimaan mobiililaitteilla:
+
+html
+Copy code
+<div class="controls">
+  <button id="move-up">Ylös</button>
+  <button id="move-down">Alas</button>
+</div>
+JavaScript-koodi:
+
+javascript
+Copy code
+const moveUpButton = document.getElementById('move-up');
+const moveDownButton = document.getElementById('move-down');
+
+// Kutsutaan moveUp-funktiota kun "Ylös" nappia painetaan
+moveUpButton.addEventListener('click', () => {
+  moveUp();
+});
+
+// Kutsutaan moveDown-funktiota kun "Alas" nappia painetaan
+moveDownButton.addEventListener('click', () => {
+  moveDown();
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+moveUpButton.addEventListener('touchstart', () => {
+  moveUp();
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+moveDownButton.addEventListener('touchstart', () => {
+  moveDown();
+});
+Tällä tavoin napit toimivat sekä näppäimistöllä että mobiililaitteilla.
+
+
+
+
+User
+Pitääkö minun lisätä nämä edellisten tapahtuma kuuntelijoiden ("mousedown" ja "mouseup") lisäksi, jotta koodi toimisi sekä tietokoneella, että mobiilissa? 
+
+Nuo valmiit funktiot ovat "startMoving("up")" liikkeelle ylöspäin ja "startMoving("down")" liikkeelle alaspäin. sekä näppäimen vapauduttua "stopMoving()"
+ChatGPT
+Jos olet jo lisännyt tapahtumakuuntelijat "mousedown" ja "mouseup" toimimaan tietokoneella, sinun ei tarvitse lisätä niitä uudelleen. Nyt kun olemme lisänneet myös tapahtumakuuntelijat "touchstart" ja "touchend", napit toimivat sekä tietokoneella että mobiililaitteilla.
+
+Esimerkiksi, kun käyttäjä painaa "Ylös" -nappia tietokoneella tai mobiililaitteella, ensin "mousedown" tai "touchstart" -tapahtumakuuntelija kutsuu "startMoving('up')" -funktiota, joka saa kalan liikkumaan ylöspäin. Sitten kun käyttäjä päästää napin irti, "mouseup" tai "touchend" -tapahtumakuuntelija kutsuu "stopMoving()" -funktiota, joka pysäyttää kalan liikkumisen.
+
+Tämän avulla koodi toimii saumattomasti sekä tietokoneella että mobiililaitteilla, ja kalaa voi ohjata sekä näppäimistöllä että napin painalluksilla mobiililaitteella.
+
+
+
+
+User
+Pitäisikö minun lisätä jokin "touch" lopettamis tapahtuma kuuntelijakin, jotta liike loppuisi?
+ChatGPT
+Kyllä, olisi hyvä lisätä myös "touchmove" -tapahtumakuuntelija, jotta voit seurata sormen liikettä ruudulla ja pysäyttää liikkeen, kun sormi ei ole enää napin päällä.
+
+Voit lisätä "touchmove" -tapahtumakuuntelijan samaan tapaan kuin edelliset tapahtumakuuntelijat:
+
+javascript
+Copy code
+upButton.addEventListener("touchmove", function (event) {
+  // Pysäytä kalan liike, kun sormi ei ole enää napin päällä
+  stopMoving();
+});
+Tämä koodi kutsuu "stopMoving()" -funktiota aina kun sormi liikkuu "Ylös" -napin päältä. Näin varmistat, että kalan liike loppuu, kun pelaaja ei enää pidä sormeaan napin päällä.
+
+
+
+
+User
+Jossakin tulevaisuudessa tuo voisi olla kätevä, mutta mainitsit edellisessä vastauksessasi "touchend" -tapahtuman.. se on mitä tarvitsen tässä kohtaa ilmeisesti
+ChatGPT
+Anteeksi, olen pahoillani sekaannuksesta. Kyllä, tarvitset "touchend" -tapahtumakuuntelijan, jotta voit pysäyttää kalan liikkeen, kun sormi ei ole enää napin päällä.
+
+Voit lisätä "touchend" -tapahtumakuuntelijan seuraavasti:
+
+javascript
+Copy code
+upButton.addEventListener("touchend", function (event) {
+  // Pysäytä kalan liike, kun sormi ei ole enää napin päällä
+  stopMoving();
+});
+Tämä koodi kutsuu "stopMoving()" -funktiota aina kun pelaaja nostaa sormensa "Ylös" -napin päältä. Näin varmistat, että kalan liike loppuu, kun pelaaja lopettaa napin painamisen.

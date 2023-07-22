@@ -1,6 +1,8 @@
 # Kalapeli
 
-## v0.5.2
+## v0.5.3
+
+## [v0.5.2](https://github.com/Pentu88/ChatGPTPeli/tree/4ee69104427845d76053f574f017011f0f3cc4eb)
 
 ### Uutta
 - Mobiililaite tukea paranneltu

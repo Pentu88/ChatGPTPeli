@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.5.2"
+const gameVersion = "v0.5.3"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -431,6 +431,26 @@ document.getElementById('move-down').addEventListener('mousedown', function() {
 });
 document.getElementById('move-down').addEventListener('mouseup', function() {
   // moveDirection = 0; // Pelaaja pysähtyy kun päästetään nappi
+  stopMoving();
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+document.getElementById('move-up').addEventListener('touchstart', () => {
+  startMoving("up");
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+document.getElementById('move-down').addEventListener('touchstart', () => {
+  startMoving("down");
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+document.getElementById('move-up').addEventListener('touchend', () => {
+  stopMoving();
+});
+
+// Tämä lisää tapahtumakuuntelijan "touchstart" -tapahtumalle, joka toimii mobiililaitteilla
+document.getElementById('move-down').addEventListener('touchsend', () => {
   stopMoving();
 });
 // ***
