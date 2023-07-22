@@ -5,7 +5,6 @@ Pelissä olisi maailmana poikkileikkaus virtaavasta vaalean sinisestä joesta, j
 Joesa on muitakin kaloja, jotka liikkuvat pelialueen oikeasta reunasta vasemmalle.  Kalasta pitäisi luoda monistettava objecti, jonka ominaisuuksia olisi ainakin  id, sijainti ja taso. 
 
 Pelitapahtumia pitää päivittää kokoajan jotta kalat etenevät.
-
 ChatGPT
 Moro! Voin auttaa sinua luomaan HTML- ja JavaScript-koodin demon runner -tyyppiseen peliin. Tässä on yksinkertainen koodiesimerkki, joka toteuttaa pelin kuvailemasi idean mukaisesti:
 
@@ -3336,3 +3335,376 @@ const cornerRadius = 10; // pyöristyksen säde
 
 drawRoundedSquare(ctx, x, y, width, height, cornerRadius);
 Tässä funktiossa drawRoundedSquare piirtää neliön, jonka vasemmanpuoleiset sivut ovat pyöristettyjä annettujen koordinaattien, leveyden, korkeuden ja pyöristyksen säteen perusteella. Käyttämällä arcTo-funktiota voit piirtää haluamasi pyöristetyn sivun neliölle.
+
+
+
+
+User
+Voisitko tehdä meidän luomalle pelille vielä tyylitellyn HTML sivun? Sivulla pitäisi olla otsikko "Kalapeli" sekä ohjeistus pelin pelaamiseen (Pisteitä kerätään syömällä keltasia kaloja, 1p kalasta sekä kuplia, 3p kuplasta. Mutta punaisia kaloja pitää varoa)
+
+HTML:ni on nyt tämän näköinen:
+<body>
+  <div id="header">
+  <span>Pisteet: <span id="score-display">0</span></span>
+  <span>Highscore:<span id="high-score">0</span></span>
+</div>
+  
+  <div id="game-container">
+  <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+  
+  <script src="render.js"></script>	
+  <script src="game.js"></script>
+</body>
+ChatGPT
+Tässä on tyylitelty HTML-sivu, joka sisältää pelille otsikon, ohjeistuksen ja pelialueen:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+    #game-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #instructions {
+      text-align: center;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <span>Pisteet: <span id="score-display">0</span></span>
+    <span>Highscore: <span id="high-score">0</span></span>
+  </div>
+
+  <div id="game-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Tämä HTML-sivu sisältää otsikon "Kalapeli" sekä pelin pelaamiseen liittyvän ohjeistuksen. Pelialue on keskitetty ja sille on asetettu pieni reunus. Pisteiden ja ennätyksen näyttäminen on toteutettu yläreunan header-divissä. Ohjeet on sijoitettu erilliseen diviin, joka on keskitetty ja sisältää ohjeistuksen pelin pelaamiseen nuolinäppäimillä.
+
+
+
+
+User
+Kuinka saisin tuon "header" -elementin siirrettyä vähän niinkuin canvas-elementin headeriksi?
+ChatGPT
+Voit muokata CSS:ää ja HTML-rakennetta hieman, jotta saat headerin sijoitettua canvas-elementin yläpuolelle. Tässä on päivitetty koodi, jossa header sijaitsee canvas-elementin yläpuolella:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #canvas-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+      background-color: #f0f0f0;
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    #instructions {
+      text-align: center;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Highscore: <span id="high-score">0</span></span>
+    </div>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Muutokset:
+
+Olen luonut uuden divin #canvas-container, joka kapseloi sekä canvas-elementin että headerin.
+Olen siirtänyt header-divin #header #canvas-container-elementin sisälle.
+Olen muuttanut #canvas-container ja #header CSS-sääntöjä niin, että ne sijaitsevat suhteellisesti toisiinsa nähden, ja header on asetettu absoluteposition. Näin se sijoittuu canvas-elementin yläpuolelle.
+
+
+
+User
+Voisiko "canvas-container" -elementin tyyliä päivittää vielä siten, että se olisi sopivan levyinen suhteessa itse canvas elementtiin. nyt container on ilmeisesti koko sivun levyinen
+ChatGPT
+Toki! Voimme muuttaa "canvas-container" -elementin leveyden suhteessa canvas-elementtiin asettamalla sille "max-width" -ominaisuuden. Tällä tavalla se ei vie koko sivun levyistä tilaa, mutta silti mukautuu näytön koon mukaan.
+
+Päivitetty koodi näyttää tältä:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #canvas-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 800px; /* Tässä voit säätää containerin maksimileveyden sopivaksi */
+      margin: 0 auto; /* Tämä keskittää elementin keskelle */
+      background-color: #f0f0f0;
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    #instructions {
+      text-align: center;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Highscore: <span id="high-score">0</span></span>
+    </div>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Muokkaa "max-width" -ominaisuuden arvoa tarpeidesi mukaan sopivaksi, ja container mukautuu näytön leveyteen niin kauan kuin se ei ylitä määriteltyä maksimileveyttä.
+
+
+
+
+User
+Tämä on jo aika hyvä. Nyt elementtien (header, canvas-container ja instructions) välit vaihtelevat sivun korkeuden mukaan. Ruudun ollessa korkea elementtien väliin jää paljon tyhjää tilaa taas jos ruutu on matala, elementit saattavat olla toistensa päällä. Miten saisin tyyliteltyä sivun siten, että Elementtien väliin jäisi jokin sopiva tyhjä tila ilman että se kasvaa hirveän suureksi tyhjäksi alueeksi
+ChatGPT
+Voit ratkaista elementtien välisten etäisyyksien ongelman asettamalla "canvas-container" ja "instructions" -elementeille sopivan määrän sisäistä tilaa (padding) sekä käyttämällä joustavia mitta-yksiköitä, kuten "vh" (viewport height) ja "vmin" (viewport minimum). Tämä auttaa säilyttämään tasaisen välin elementtien välillä eri näyttökorkeuksilla.
+
+Päivitetty koodi näyttää tältä:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #canvas-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      padding: 2vh; /* Aseta sopiva sisäinen tila ylhäältä ja alhaalta */
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #header {
+      position: absolute;
+      top: 2vh; /* Aseta sopiva etäisyys yläreunasta */
+      left: 10px;
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    #instructions {
+      text-align: center;
+      padding: 2vh; /* Aseta sopiva sisäinen tila ylhäältä ja alhaalta */
+      margin: 2vh auto; /* Aseta sopiva etäisyys ylä- ja alareunasta */
+      max-width: 600px; /* Aseta sopiva maksimileveys */
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Highscore: <span id="high-score">0</span></span>
+    </div>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Tässä koodissa olen lisännyt sisäisen tilan ylä- ja alareunasta sekä "canvas-container" -elementille että "instructions" -elementille. Lisäksi "instructions" -elementille olen asettanut maksimileveyden, jotta teksti ei veny liian leveäksi laajemmilla näytöillä. Nyt elementit säilyttävät sopivan etäisyyden toisistaan eri näyttökorkeuksilla. Voit säätää "padding"- ja "max-width" -arvoja tarpeen mukaan saavuttaaksesi haluamasi ulkoasun.
+
+
+
+
+User
+Minulla on nyt canvas-container elementin sisällä header ja canvas elementit. Ne ovat nyt vierekkäin ja haluaisin ne päällekäin.. header (tulos -elementti) yläpuolella ja canvas sen alapuolella. 
+ChatGPT
+Voit saavuttaa tämän muuttamalla "canvas-container" elementin tyyliä siten, että sen sisältämät elementit asetetaan pystysuuntaan. Tämä voidaan tehdä käyttämällä "flex-direction" -ominaisuutta ja asettamalla sen arvoksi "column". Muista myös päivittää "header" ja "canvas" elementtien tyylejä tarvittaessa. Päivitetty koodi näyttää tältä:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #canvas-container {
+      position: relative;
+      display: flex;
+      flex-direction: column; /* Aseta sisältämät elementit pystysuuntaan */
+      justify-content: center;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      padding: 2vh;
+    }
+    #game-canvas {
+      border: 1px solid black;
+    }
+    #header {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    #instructions {
+      text-align: center;
+      padding: 2vh;
+      margin: 2vh auto;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Highscore: <span id="high-score">0</span></span>
+    </div>
+    <canvas id="game-canvas" width="600" height="300"></canvas>
+  </div>
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+Nyt "header" elementti sijaitsee "canvas" elementin yläpuolella. Voit muuttaa "justify-content" ja "align-items" -ominaisuuksia tarpeen mukaan säätääksesi elementtien tarkkaa sijaintia canvas-containerissa.

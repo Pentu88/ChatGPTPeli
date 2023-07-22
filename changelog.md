@@ -4,8 +4,9 @@
 
 ## Uutta
 - Uudet kalaa muistuttavat hahmot
+- Uusi tyylitelty HTML -sivu
 
-## v0.4.3
+## [v0.4.3](https://github.com/Pentu88/ChatGPTPeli/tree/ee43e1ad00044e20be60eddc5c4c80989492ce06)
 
 ### Uutta
 - pelin html-tiedoston nimi muutettu

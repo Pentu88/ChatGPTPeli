@@ -1,60 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Demon Runner</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalapeli</title>
   <style>
-    #game-container {
-      display: flex;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-
+    #canvas-container {
+      position: relative;
+      display: flex;
+      flex-direction: column; /* Aseta sisältämät elementit pystysuuntaan */
+      justify-content: center;
+      align-items: center;
+      // max-width: 800px;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      padding: 2vh;
+    }
     #game-canvas {
       border: 1px solid black;
     }
-
-    #game-message {
+    #header {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 200px;
-      height: 100px;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-size: 20px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      justify-content: space-between;
+      // background-color: #f5f5f5; /* #f0f0f0 */
+	  width: 600px;
+      padding: 10px;
     }
-
-    #game-restart-button {
-      width: 100px;
-      height: 40px;
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
+    #instructions {
+      text-align: center;
+      padding: 2vh;
+      margin: 2vh auto;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
-  <h1>Demon Runner</h1>
-  
-  <!-- *** Lisätty ChatGPT'n luomaa koodia -->
-  <!-- NOTICE tekstiä muutettu-->
-  <div id="header">
-  <span>Pisteet: <span id="score-display">0</span></span>
-  <span>Highscore:<span id="high-score">0</span></span>
-</div>
-  <!-- *** -->
-  
-  <div id="game-container">
+  <div id="canvas-container">
+    <div id="header">
+      <span>Pisteet: <span id="score-display">0</span></span>
+      <span>Ennätys: <span id="high-score">0</span></span>
+    </div>
     <canvas id="game-canvas" width="600" height="300"></canvas>
   </div>
-  
-  <!-- Lisää render.js-tiedosto -->
-  <script src="render.js"></script>	
-  
+
+  <div id="instructions">
+    <h1>Kalapeli</h1>
+    <p>Pisteitä kerätään syömällä keltaisia kaloja (1p) sekä kuplia (3p).</p>
+    <p>Varo punaisia kaloja!</p>
+    <p>Pelaa nuolinäppäimillä. Onnea!</p>
+  </div>
+
+  <script src="render.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
