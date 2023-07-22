@@ -1,6 +1,11 @@
 # Kalapeli
 
-## 0.4.3
+## v0.5.0
+
+## Uutta
+- Uudet kalaa muistuttavat hahmot
+
+## v0.4.3
 
 ### Uutta
 - pelin html-tiedoston nimi muutettu

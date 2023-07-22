@@ -3,7 +3,7 @@
 // var gameHeight = canvas.height;
 /// ***
 
-const gameVersion = "v0.4.3"
+const gameVersion = "v0.5.0"
 
 /// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
@@ -42,7 +42,7 @@ var playerFish = {
   id: 1,
   // NOTICE lisätty muuttuja ChatGPT'n muuttuja viittauksen pohjalta 
   positionX: 40, // NOTICE arvoa muutettu, ettei kala ole pelialueen reunassa kiinni
-  positionY: initialPlayerPosition, //
+  positionY: initialPlayerPosition,
   position: 30,
   level: 1,
   color: "orange",
@@ -116,8 +116,8 @@ function getRandomColor() {
 // NOTICE yhdistelty aikaisemmista versioista sopivammaksi
 function generateFish() {
   // NOTICE arvoja muutettu
-  let width = 40; // Aseta kalan leveys
-  let height = 20; // Aseta kalan korkeus
+  let width = 36; // Aseta kalan leveys
+  let height = 26; // Aseta kalan korkeus
 
   // const colors = ["red", "yellow"];
   // const color = colors[Math.floor(Math.random() * colors.length)];
@@ -133,8 +133,8 @@ function generateFish() {
     speed = Math.random() < 0.08 ? .8 : 1;
 
     // Sinisille kaloille pienempi koko
-    width = 40;
-    height = 40;
+    width = 26;
+    height = 26;
   } else if (color === "red") {
     // Punaisille kaloille suurempi koko
     width = 56;
@@ -331,7 +331,7 @@ function updateGame() {
   
   // NOTICE funktio kutsu lisätty
   renderGame(fishList, playerFish)
-  
+   
   // *** Lisätty ChatGPT'n luoma koodia
   // NOTICE muuttuja viittausta muokattu vastaamaan aiempaa koodia
   updateGameDifficulty(score);
