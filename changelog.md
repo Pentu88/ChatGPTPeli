@@ -1,6 +1,15 @@
 # Kalapeli
 
-## v0.5.3
+## v0.5.4
+
+### Muutoksia
+- HTML -sivun tyylit siirretty erilliseen tyylitiedostoon
+
+### Bugeja korjattu
+- Mobiililaite tukea parannettu
+
+## [v0.5.3](https://github.com/Pentu88/ChatGPTPeli/tree/07229b34d643f7ea2a8bd7975fa0cac331ea5ba4)
+- Mobiililaite tukea parannettu
 
 ## [v0.5.2](https://github.com/Pentu88/ChatGPTPeli/tree/4ee69104427845d76053f574f017011f0f3cc4eb)
 

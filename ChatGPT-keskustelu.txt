@@ -5,6 +5,7 @@ Pelissä olisi maailmana poikkileikkaus virtaavasta vaalean sinisestä joesta, j
 Joesa on muitakin kaloja, jotka liikkuvat pelialueen oikeasta reunasta vasemmalle.  Kalasta pitäisi luoda monistettava objecti, jonka ominaisuuksia olisi ainakin  id, sijainti ja taso. 
 
 Pelitapahtumia pitää päivittää kokoajan jotta kalat etenevät.
+
 ChatGPT
 Moro! Voin auttaa sinua luomaan HTML- ja JavaScript-koodin demon runner -tyyppiseen peliin. Tässä on yksinkertainen koodiesimerkki, joka toteuttaa pelin kuvailemasi idean mukaisesti:
 
@@ -4080,3 +4081,29 @@ upButton.addEventListener("touchend", function (event) {
   stopMoving();
 });
 Tämä koodi kutsuu "stopMoving()" -funktiota aina kun pelaaja nostaa sormensa "Ylös" -napin päältä. Näin varmistat, että kalan liike loppuu, kun pelaaja lopettaa napin painamisen.
+
+
+
+
+User
+Minulla on HTML -sivulla kaksi nuoli nappi -elementtiä. Kun nappia painaa mobiili laitteella pitkään (kalaa ohjatessa), niin laite yrittää kopioida napin "teksti" osan ("↑" tai "↓"), voisinko estää jotenkin tuon tekstin kopioimisen, se häiritsee peliä hieman?
+ChatGPT
+Kyllä, voit estää nuolinappien tekstiosan kopiointia lisäämällä user-select: none; -ominaisuuden CSS:ään. Tämä estää tekstin valinnan ja kopioinnin.
+
+Voit tehdä sen näin:
+
+css
+Copy code
+button {
+  user-select: none;
+}
+Tämä CSS-sääntö estää kaikkien button -elementtien tekstiosan kopioinnin sivulla. Jos haluat kohdistaa sen vain tiettyihin nuolinappeihin, voit antaa napeille erityisen luokan tai id:n ja käyttää sitä CSS-säännössä.
+
+Esimerkiksi, jos nuolinappisi ovat luokan arrow-button alla, voit estää kopioinnin vain näillä napeilla seuraavasti:
+
+css
+Copy code
+.arrow-button {
+  user-select: none;
+}
+Tämä varmistaa, että napin tekstiä ei voi kopioida, kun sitä painaa pitkään mobiililaitteella.

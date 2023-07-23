@@ -5,85 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalapeli</title>
   <meta property="og:title" content="Kalapeli">
-  <meta property="og:description" content="Pisteitä kerätään syömällä keltasia kaloja, 1p kalasta sekä kuplia, 3p kuplasta. Mutta punaisia kaloja pitää varoa">
-  <meta property="og:image" content="kalapeli.png">
+  <meta property="og:description" content="Pisteitä kerätään syömällä keltasia kaloja sekä kuplia. Mutta muista varoa punaisia kaloja!">
+  <meta property="og:image" content="https://kalapeli.onrender.com/assets/images/kalapeli.png">
   <meta property="og:url" content="https://kalapeli.onrender.com/">
   <meta property="og:type" content="game"> <!-- NOTICE lisätty -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    #canvas-container {
-      position: relative;
-      display: flex;
-      flex-direction: column; /* Aseta sisältämät elementit pystysuuntaan */
-      justify-content: center;
-      align-items: center;
-      // max-width: 800px;
-      margin: 0 auto;
-      background-color: #f0f0f0;
-      padding: 2vh;
-    }
-    #game-canvas {
-      border: 1px solid black;
-    }
-    #header {
-      display: flex;
-      justify-content: space-between;
-      // background-color: #f5f5f5; /* #f0f0f0 */
-	  width: 600px;
-      padding: 10px;
-    }
-    #instructions {
-      text-align: center;
-      padding: 2vh;
-      margin: 2vh auto;
-      max-width: 600px;
-    }
-	#footer {
-      text-align: center;
-      background-color: #f0f0f0;
-      padding: 10px;
-      margin-top: 10px;
-    }
-	
-  #controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 20px;
-  }
-
-  .control-button {
-    font-size: 24px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Lisätään hover-efekti napille */
-  .control-button:hover {
-    background-color: #0056b3;
-  }
-	@media (max-width: 768px) {
-      /* Näytön leveys on 768px tai pienempi */
-      #canvas-container {
-        width: 100%;
-      }
-	  #header {
-        width: 100%;
-      }
-	  #game-canvas {
-        width: 95%;
-      } 
-    }
-  </style>
+  <!-- NOTICE tyylit siirretty erilliseen tiedostoon -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="canvas-container">
