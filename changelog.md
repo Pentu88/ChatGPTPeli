@@ -1,5 +1,15 @@
 # Kalapeli
 
+## v0.6.0
+
+## Uutta
+- törmäys tarkastus uudistettu
+
+## Bugeja korjattu
+- Taustaa päivitetty
+- Kalojen muotoa korjattu
+- Kalojen piirtoa säädetty
+
 ## v0.5.4
 
 ### Muutoksia
