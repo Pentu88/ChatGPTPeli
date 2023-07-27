@@ -267,9 +267,7 @@ function getRandomColor() {
   let probabilities;
   if (gameDifficulty < 2) {
     // Aluksi punainen 40% ja keltainen 60%
-    probabilities = [0.4, 0.4, 0.2];
-    // probabilities = [0.35, 0.65, 0];
-	console.log("Vaikeustaso (" + gameDifficulty+ ") on alle määritellyn")
+    probabilities = [0.35, 0.65, 0];
   } else {
     // Tasolta 2 eteenpäin punainen 30%, keltainen 50% ja sininen 20%
     probabilities = [0.4, 0.5, 0.1];
