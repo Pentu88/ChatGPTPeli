@@ -90,9 +90,8 @@ const fishColorsData = [
     pupil: { x: -1, y: 0, radius: 2},
     onCollision: (fish) => {  // NOTICE argumentti muutettu (playerFish -> fish)
       console.log("Pelaaja sai pisteen!");
-	  // TODO lisää funktio kutsu
-      score++; // Lisätään pistemäärään yksi
-	  // addPoints(1)
+	  // NOTICE funktio kutsu lisätty
+	  addPoints(1)
 	  
 	  // Poista kala fishList-listalta
       var fishIndex = fishList.indexOf(fish);
@@ -110,7 +109,8 @@ const fishColorsData = [
     // pupil: { x: 16, y: 10, radius: 2 },
     onCollision: (fish) => {  // NOTICE argumentti muutettu (playerFish -> fish)
       console.log("Pelaaja sai kolme pistettä kuplasta!");
-      score += 3; // Lisätään pistemäärään kolme
+      // NOTICE funktio kutsu lisätty
+	  addPoints(3)
 
       // Poista kupla fishList-listalta
       var fishIndex = fishList.indexOf(fish);
@@ -190,114 +190,12 @@ function addPoints(points) {
 }
 // ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
-function getRandomColor_OLD() {
-  const colors = ["red", "yellow", "blue"];
-  // NOTICE arvonnan todennäköisyyksiä muutettu
-  const probabilities = [0.45, 0.45, 0.1]; // Punainen 40%, keltainen 40%, sininen 20%
-
-  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
-  const random = Math.random();
-  let cumulativeProbability = 0;
-  for (let i = 0; i < colors.length; i++) {
-    cumulativeProbability += probabilities[i];
-    if (random < cumulativeProbability) {
-      return colors[i];
-    }
-  }
-
-  return colors[0]; // Oletusarvo punainen, jos jotain menee pieleen
-}
-// ***
-
-// *** Lisätty ChatGPT'n luomaa koodia
-// NOTICE yhdistelty aikaisemmista versioista sopivammaksi
-function generateFish_OLD() {
-  // NOTICE arvoja muutettu
-  let width = 37; // Aseta kalan leveys
-  let height = 24; // Aseta kalan korkeus
-
-  // const colors = ["red", "yellow"];
-  // const color = colors[Math.floor(Math.random() * colors.length)];
-  const color = getRandomColor();
-  
-  // NOTICE Satunnaisen nopeamman kalan arpomista muuteettu
-  let speed = Math.random() < 0.12 ? 1.5 : 1;
-  
-  // *** Lisätty ChatGPT'n luomaa koodia
-  if (color === "blue") {
-    // Kuplia esiintyy harvemmin
-	// Notice arvoja muutettu
-    speed = Math.random() < 0.08 ? .8 : 1;
-
-    // Sinisille kaloille pienempi koko
-    width = 26;
-    height = 26;
-  } else if (color === "red") {
-    // Punaisille kaloille suurempi koko
-    width = 56;
-    height = 36;
-  }
-  
-  const positionX = gameWidth;
-  //NOTICE Arvontaa muutettu kalan piirron muutoksen vuoksi + sijanti tiedot siirretty myöhemmälle kalojen vaihtelevan koon vuoksi
-  const positionY = Math.floor(Math.random() * (gameHeight - height) + height / 2); // Satunnainen korkeus (20-260); // Arvo satunnainen sijainti pystysuunnassa
-
-  // ***
-  
-  const fish = {
-	// DEBUG pidetään toistaiseksi kalan ominaisuutena  
-	level: Math.floor(Math.random() * playerFish.level) + 1, // Satunnainen taso (1-pelaajan taso)
-    	
-	// NOTICE Säästetty aikaisempi versio
-    id: fishCount + 2, // Lisää 2 id:hen, jotta huomioi pelaajan kalan
-    positionX,
-    positionY,
-    width,
-    height,
-    color,
-    speed,
-	eye: {
-      x: 12,
-      y: -5,
-      radius: 6
-    },
-    pupil: {
-      x: -1,
-      y: 0,
-      radius: 3
-    }
-  };
-
-  // Lisää uusi kalaobjekti kalalistaan
-  fishList.push(fish);
-  
-  // *** Lisätty ChatGPT'n luomaa koodia
-  // fishList.push(fish);
-  fishCount++; // Kasvata generoitujen kalojen määrää yhdellä
-  // ***
-  
-  // *** Lisätty ChatGPT'n luomaa koodia
-  // Päivitä pelin vaikeustaso, kun kaloja on generoitu 25 lisää
-  if (fishCount % 25 === 0) {
-    updateGameDifficulty();
-  }
-  // ***
-}
-
 // 
 function getRandomColor() {
   const colors = ["red", "yellow", "blue"];
 
   // Muokkaa todennäköisyyslistaa vaikeustason perusteella
   let probabilities;
-  /*if (gameDifficulty < 2) {
-    // Aluksi punainen 40% ja keltainen 60%
-    probabilities = [0.35, 0.65, 0];
-  } else {
-    // Tasolta 2 eteenpäin punainen 30%, keltainen 50% ja sininen 20%
-    probabilities = [0.4, 0.5, 0.1];
-  }*/
   
   if (gameDifficulty >= 4) {
     const redProbability = 0.45 + (gameDifficulty - 4) * 0.02; // Punaisen todennäköisyys nousee 1-2% jokaisella vaikeustason nousulla
@@ -464,58 +362,6 @@ function updateGame() {
       // Poista kala listalta
       fishList.splice(i, 1);
 	}
-	// ***
-	
-	// Tarkista, osuuko pelaajan kala muihin kaloihin
-	// NOTICE alkuperäinen törmäys tarkastus vaihdettu funktio kutsuun
-    /*if (checkCollision(playerFish, fish)) {
-      console.log("Pelaajan kala osui kalaan " + fish.id + "!");
-      // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
-	  // *** Lisätty ChatGPT'n luomaa koodia
-	  if (fish.color === "red") {
-		
-		// *** Lisätty ChatGPT'n luomaa koodia
-		console.log("Peli päättyi! Punainen kala osui pelaajan kalaa.");
-		gameOver = true;
-		// NOTICE drawGameOver suorittaminen siirretty myöhemmäksi, jotta kaloja ei piirretä lopetus ruudun päälle
-		// drawGameOver();
-		// ***
-		
-		// *** Lisätty ChatGPT'n luomaa koodia
-      } else if (fish.color === "yellow") {
-        console.log("Pelaaja sai pisteen!");
-        score++; // Lisätään pistemäärään yksi
-		
-		// *** Lisättiin ChatGPT'n luomaa koodia
-		// Poista kala fishList-listalta
-        var fishIndex = fishList.indexOf(fish);
-        if (fishIndex !== -1) {
-          fishList.splice(fishIndex, 1);
-        }
-		
-	  // ***
-	  // ***
-	  
-	  // *** Lisätty ChatGPT'n luomaa koodia
-      } else if (fish.color === "blue") {
-        console.log("Pelaaja sai kolme pistettä kuplasta!");
-        score += 3; // Lisätään pistemäärään kolme
-
-        // Poista kupla fishList-listalta
-        var fishIndex = fishList.indexOf(fish);
-        if (fishIndex !== -1) {
-          fishList.splice(fishIndex, 1);
-        }
-      } else {
-        // Tässä voit toteuttaa toimenpiteet, kun kalat osuvat yhteen, mutta kala ei ole punainen.
-	  }
-	  // ***
-	  
-	  // *** Lisätty ChatGPT'n luomaa koodia
-	  // Päivitä pistemäärän näyttö
-	  document.getElementById("score-display").textContent = score;
-	  // ***
-    } */
 	
 	if (checkCollision(playerFish, fish)) {
 	  console.log(fish)

@@ -123,54 +123,6 @@ function drawGameOver() {
 }
 // ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
-// NOTICE ctx parametri poistettu, koska muuttuja on siirretty tähän tiedostoon
-function drawPlayerFish_OLD(playerFish) {
-  // NOTICE Haetaan kalan väri parametrina syötetystä kala objektista, updateGame -funktiossa olleen koodin mukaisesti
-  ctx.fillStyle = playerFish.color; // Aseta pelaajan kalan väri (esim. oranssi)
-  /* 
-  ctx.fillRect(
-    playerFish.positionX,
-	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
-    playerFish.positionY, // - playerFish.height / 2,
-    playerFish.width,
-    playerFish.height
-  );*/
-  
-  // NOTICE Muokattu ja yhdistelty ChatGPT'n luomista kuvioista (kokeile ja erehdy menetelmällä)
-  // Pyrstö
-  ctx.beginPath();
-  ctx.arc(playerFish.positionX + playerFish.width - playerFish.height / 2, playerFish.positionY + playerFish.height / 2, playerFish.height / 2,  Math.PI / 2 , Math.PI + Math.PI / 2, true);
-  ctx.closePath();
-  ctx.fill();
-  
-  // Pää
-  ctx.beginPath();
-  ctx.arc(playerFish.positionX, playerFish.positionY + playerFish.height / 2, playerFish.height / 2,  Math.PI / 2 , Math.PI + Math.PI / 2, true);
-  ctx.closePath();
-  ctx.fill();
-  
-  // Kala
-  let size = playerFish.height
-  let more = size / 2 - 2
-    	
-  const angleRad = (Math.PI / 180) * 30;
-  const sideLength = size / 2;
-  const height = Math.sqrt(3) * sideLength;
-  
-  ctx.beginPath();
-  ctx.moveTo(more + playerFish.positionX + sideLength / 2, playerFish.positionY);
-  // NOTICE lisätty
-  ctx.lineTo(more + playerFish.positionX + sideLength * 1.5, playerFish.positionY);
-  ctx.lineTo(more + playerFish.positionX + size, playerFish.positionY + size / 2);
-  ctx.lineTo(more + playerFish.positionX + sideLength * 1.5, playerFish.positionY + size);
-  // NOTICE lisätty
-  ctx.lineTo(more + playerFish.positionX + sideLength / 2, playerFish.positionY + size);
-  ctx.lineTo(more + playerFish.positionX, playerFish.positionY + size / 2);
-  ctx.closePath();
-  ctx.fill();
-}
-
 // v4
 // NOTICE "playerFish" muuttuja viittaukset muutettu "fish" -muotoon, kuten muissakin kaloissa
 function drawPlayerFish(fish) {
@@ -187,11 +139,10 @@ function drawPlayerFish(fish) {
   
   ctx.beginPath();
   ctx.moveTo(fish.positionX + fish.width - fish.height / 2, fish.positionY - fish.height / 2);
-  // TODO säädä hieman
+
   ctx.arc(fish.positionX + fish.width - fish.height / 2, fish.positionY, fish.height / 2, Math.PI * 1.5, Math.PI * 0.5, false);
   // NOTICE lisätty
- ctx.lineTo(fish.positionX + fish.width - sideLength - sideLength / 2, fish.positionY + fish.height / 2);
-  // TODO säädä hieman
+  ctx.lineTo(fish.positionX + fish.width - sideLength - sideLength / 2, fish.positionY + fish.height / 2);
   ctx.arc(fish.positionX + fish.width - sideLength - sideLength / 2, fish.positionY, fish.height / 2,  Math.PI * 0.5, Math.PI * 1.5, false);
   ctx.closePath();
   ctx.fill();
@@ -221,48 +172,6 @@ function drawPlayerFish(fish) {
   ctx.fill();
 }
 // ***
-
-// *** Lisätty ChatGPT'n luomaa koodia
-// NOTICE "ctx" -parametri poistettu
-function drawRedFish_OLD(fish) {
-  /*ctx.fillStyle = "red";
-  ctx.fillRect(
-	// NOTICE poistettu kalan koon vähentäminen X sijainnista
-    fish.positionX,
-	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
-    fish.positionY, // - fish.height / 2,
-    fish.width,
-    fish.height
-  );*/
- 
-  // NOTICE Muokattu ja yhdistelty ChatGPT'n luomista kuvioista (kokeile ja erehdy menetelmällä)
-  ctx.fillStyle = "red";
-
-  // Pyrstö
-  ctx.beginPath();
-  ctx.moveTo(fish.positionX + fish.width, fish.positionY);
-  ctx.lineTo(fish.positionX + fish.width - fish.height * 0.6, fish.positionY + fish.height / 2);
-  ctx.lineTo(fish.positionX + fish.width, fish.positionY + fish.height)
-  // ctx.lineTo(x + size, y + size);
-  ctx.closePath();
-  ctx.fill();
-
-  // Kala
-  let cornerRadius = 12;
-  
-  ctx.beginPath();
-  ctx.moveTo(fish.positionX + cornerRadius, fish.positionY);
-  ctx.arcTo(fish.positionX, fish.positionY, fish.positionX, fish.positionY + cornerRadius, cornerRadius);
-  ctx.lineTo(fish.positionX, fish.positionY + fish.height - cornerRadius);
-  ctx.arcTo(fish.positionX, fish.positionY + fish.height, fish.positionX + cornerRadius, fish.positionY + fish.height, cornerRadius);
-  ctx.lineTo(fish.positionX + cornerRadius + 15, fish.positionY + fish.height);
-  //ctx.lineTo(x + width, y);
-  // NOTICE lisätty puoli pyöreä takaosa
-  ctx.arcTo(fish.positionX + cornerRadius * 2 + 15, fish.positionY + fish.height, fish.positionX + cornerRadius * 3 + 15, fish.positionY + fish.height / 2, fish.height / 2);
-  ctx.arcTo(fish.positionX + cornerRadius * 3 + 15, fish.positionY, fish.positionX + cornerRadius * 2 + 15 , fish.positionY, fish.height / 2);
-  ctx.closePath();
-  ctx.fill();
-}
 
 function drawRedFish(fish) {
   ctx.fillStyle = "red";
@@ -315,46 +224,6 @@ function drawRedFish(fish) {
     0,
     2 * Math.PI
   );
-  ctx.fill();
-}
-
-// NOTICE "ctx" -parametri poistettu
-function drawYellowFish_OLD(fish) {
-  ctx.fillStyle = "yellow";
-  /*
-  ctx.fillRect(
-    // NOTICE poistettu kalan koon vähentäminen X sijainnista
-    fish.positionX,
-	// NOTICE kalan korkeutta säädetty (jotta törmäys voidaan laskea oikein)
-    fish.positionY, // - fish.height / 2,
-    fish.width,
-    fish.height
-  );*/
-  
-  // NOTICE Muokattu ja yhdistelty ChatGPT'n luomista kuvioista (kokeile ja erehdy menetelmällä)
-  // Pyrstö
-  ctx.beginPath();
-  ctx.arc(fish.positionX + fish.width, fish.positionY + fish.height / 2, fish.height / 2,  Math.PI / 2 , Math.PI + Math.PI / 2, false);
-  ctx.closePath();
-  ctx.fill();
-  
-  // Kala
-  let size = fish.height
-    	
-  const angleRad = (Math.PI / 180) * 30;
-  const sideLength = size / 2;
-  const height = Math.sqrt(3) * sideLength;
-
-  ctx.beginPath();
-  ctx.moveTo(fish.positionX + sideLength / 2, fish.positionY);
-  // NOTICE lisätty
-  ctx.lineTo(fish.positionX + sideLength * 1.5, fish.positionY);
-  ctx.lineTo(fish.positionX + size, fish.positionY + size / 2);
-  ctx.lineTo(fish.positionX + sideLength * 1.5, fish.positionY + size);
-  // NOTICE lisätty
-  ctx.lineTo(fish.positionX + sideLength / 2, fish.positionY + size);
-  ctx.lineTo(fish.positionX, fish.positionY + size / 2);
-  ctx.closePath();
   ctx.fill();
 }
 

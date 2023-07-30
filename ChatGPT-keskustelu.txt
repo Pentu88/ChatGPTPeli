@@ -4107,3 +4107,950 @@ Copy code
   user-select: none;
 }
 Tämä varmistaa, että napin tekstiä ei voi kopioida, kun sitä painaa pitkään mobiililaitteella.
+
+
+
+
+User
+Seuraavaksi ajattelin päivittää kalakuviotani hieman. Minulla on tiedossa kuuskulmion (hexagon) vastakkaisten sivujen välinen etäisyys, kuinka saisin laskettua etäisyyden keskeltä kärkeen. Eikös tuo mitta ole sama kuin sivun pituus?  Toisin sanoen  sivun pituus on vastakkaisten kärkien etäisyys?
+ChatGPT
+Kyllä, olet oikeassa. Kuusikulmion (hexagon) sivun pituus on sama kuin vastakkaisten kärkien etäisyys. Kuusikulmiossa vastakkaisten sivujen välinen etäisyys on kaksi kertaa sivun pituus. Voit siis käyttää sivun pituutta myös vastakkaisten kärkien etäisyyden mittana keskeltä kärkeen.
+
+
+
+
+User
+
+2 / 2
+
+Minulla ei ole tiedossa sen paremmin vastakkaisten kärkien väliä (eikä  tämän myötä etäisyyttä keskeltä kärkeen), kuin sivun mittaakaan. Minulla on tiedossa vain kuuskulmion vastakkaisten sivujen (edge) välinen etäisyys, eli ulkomitoista se lyhyempi. Haluaisin tietää millä kaavalla saan selville etäisyyden keskeltä (center) kärkeen (corner), kun tiedossa on vain ulkomitoista lyhyempi, eli vastakkaisten sivujen välinen etäisyys.  
+ChatGPT
+Jos sinulla on tiedossa kuuskulmion vastakkaisten sivujen välinen etäisyys (edge), voit laskea etäisyyden keskeltä (center) kärkeen (corner) seuraavalla kaavalla:
+
+Etäisyys keskeltä kärkeen = (sivun pituus / 2) / cos(π / 6)
+
+Missä sivun pituus on vastakkaisten sivujen välinen etäisyys (edge). Kosini-funktion (cos) arvo π / 6 vastaa 30 asteen kulmaa, joka on kuusikulmion kärjen keskellä. Kun jaat sivun pituuden puoleen ja jaat sen sitten kosini-funktion arvolla, saat etäisyyden keskeltä kärkeen.
+
+
+
+
+User
+Saanko tuosta vielä javascript esimerkin, kun sivun pituus on tallennettu "height" muuttujaan?
+ChatGPT
+Tietysti! Voit käyttää seuraavaa JavaScript-koodia laskeaksesi etäisyyden keskeltä kärkeen, kun sivun pituus on tallennettu muuttujaan "height":
+
+javascript
+Copy code
+const height = 10; // Vastakkaisten sivujen välinen etäisyys
+
+// Lasketaan etäisyys keskeltä kärkeen
+const distanceFromCenterToCorner = (height / 2) / Math.cos(Math.PI / 6);
+
+console.log(distanceFromCenterToCorner); // Tulostaa etäisyyden keskeltä kärkeen
+Muista, että tässä esimerkissä oletetaan, että "height" muuttujaan on tallennettu vastakkaisten sivujen välinen etäisyys. Voit vaihtaa "height" muuttujan arvoa tarpeen mukaan, ja koodi laskee silti oikean etäisyyden keskeltä kärkeen.
+
+
+
+
+User
+Kiitos! Tämän tiedon avulla sain hahmoteltua paperilla uudelleen yhen kala hahmoistani paperille ja edelleen peliin. 
+
+Nyt kun kalat eivät ole enää suorakulmaisia palkkeja, osuma tarkistuksessa tulkitaan osuma vaikka ruudulla kala hahmojen väliin jäisi vielä tyhjää.  Kal hahmon pään muoto vaihtelee hieman, mutta on enemmän pyöreä, kuin suorakulmainen
+
+Minun törmäys tarkastus funktiossa verrataan kala objektien osumista noiden suorakulmioiden  (vain puolet huomioidaan, sillä pyrstö kontakti ei tapa), sekä sijainnin perusteella. Funktion sisältö näyttää tältä:
+
+  // Tarkista, osuvatko kalojen rajat toisiinsa
+  if (
+    playerFish.positionX + playerFish.width / 2 < fish.positionX + fish.width / 2 &&
+    playerFish.positionX + playerFish.width > fish.positionX &&
+    playerFish.positionY < fish.positionY + fish.height  &&
+    playerFish.positionY + playerFish.height > fish.positionY
+  ) {
+    return true; // Osuvat yhteen
+  }
+
+  return false; // Eivät osu yhteen
+
+Pitäisikö törmäys tarkastusta muuttaa jotenkin, miten?
+ChatGPT
+Kun kalaobjektit eivät ole enää suorakulmaisia, törmäystarkastus on muutettava vastaavasti. Yksi lähestymistapa on käyttää kahden pyöreän muodon törmäystarkastusta. Voit käyttää Pythagoraan lausetta tarkistaaksesi etäisyyden kahden kalaobjektin keskipisteiden välillä. Jos tämä etäisyys on pienempi kuin kalojen säteiden summa, voit päätellä, että kaksi kalaa törmäävät.
+
+Tässä on esimerkki törmäystarkastuksesta pyöreiden kalaobjektien välillä:
+
+javascript
+Copy code
+function checkCollision(playerFish, fish) {
+  // Lasketaan kalojen keskipisteiden välinen etäisyys
+  const distanceX = playerFish.positionX - fish.positionX;
+  const distanceY = playerFish.positionY - fish.positionY;
+  const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+
+  // Lasketaan kalojen säteiden summa
+  const radiusSum = playerFish.width / 2 + fish.width / 2;
+
+  // Tarkistetaan, osuvatko kalojen rajat toisiinsa
+  if (distance < radiusSum) {
+    return true; // Osuvat yhteen
+  }
+
+  return false; // Eivät osu yhteen
+}
+Tämä törmäystarkastus huomioi nyt kalojen pyöreän muodon. Jos kalojen keskipisteiden välinen etäisyys on pienempi kuin kalojen säteiden summa, voidaan päätellä, että kaksi kalaa törmäävät toisiinsa. Voit käyttää tätä funktiota törmäystarkastuksena, kun kalaobjekteja liikkuu pelissä.
+
+
+
+
+User
+
+2 / 2
+
+Jotta tämä toimisi oikein grafiikkaan nähden, sitä tulisi hieman päivittää vielä. 
+
+Törmäykseen käytettävä säde on puolet kalan korkeudesta, sillä kalan sijainti y-akselilla on kalan keskikohta.
+
+Pelaajan ohjaaman kalahahmon (playerFish) sijainti on nyt merkitty vasempaan reunaan, eli pyrstöön. Vaaka-akselilla laskenta kohtaa pitäisi siirtää kalan pituuden (width) verran, josta vähennetään "säde" = puolet korkeudesta (height).  Pystyakselilla kalan sijainti on oikein laskettu.
+
+Vastaavasti viholliskalan (fish) sijainti on merkitty myös vasempaan reunaan, eli päähän (sinänsä oikein), sillä vihollis kalat uivat vastaan. Sijaintiin tulisi lisätä kuitenkin puoli korkeutta (height) , jotta testi toimisi halutusti.  Pystyakselilla kalan sijainti on oikein laskettu.
+
+Olisiko viisaampaa piirtää kalat uuteen sijainnin mukaan uuteen kohtaan vai korjata tätä törmäystarkastus funktiota?
+ChatGPT
+Koska kalan sijainti on merkitty nyt eri tavalla, on järkevää korjata törmäystarkastusfunktiota vastaamaan uutta sijaintia. Muuten törmäystarkastus ei toimi halutusti, koska se olettaa kaloiden sijaitsevan tietyissä pisteissä.
+
+Voit päivittää törmäystarkastusfunktiota seuraavasti:
+
+javascript
+Copy code
+function checkCollision(playerFish, fish) {
+  // Lasketaan kalojen keskipisteiden välinen etäisyys
+  const distanceX = (playerFish.positionX + playerFish.width / 2) - (fish.positionX + fish.width / 2);
+  const distanceY = (playerFish.positionY + playerFish.height / 2) - (fish.positionY + fish.height / 2);
+  const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+
+  // Lasketaan pelaajan ohjaaman kalan säde
+  const playerFishRadius = playerFish.height / 2;
+
+  // Lasketaan viholliskalan säde
+  const fishRadius = fish.height / 2;
+
+  // Tarkistetaan, osuvatko kalojen rajat toisiinsa
+  if (distance < playerFishRadius + fishRadius) {
+    return true; // Osuvat yhteen
+  }
+
+  return false; // Eivät osu yhteen
+}
+Tässä päivitetyssä törmäystarkastusfunktiossa lasketaan kalojen keskipisteiden välinen etäisyys oikein uuden sijainnin mukaisesti ja käytetään kaloiden uusia säteitä törmäyksen tarkastukseen. Tämä pitäisi toimia oikein grafiikan suhteen ja mahdollistaa oikeanlaisten törmäysten havaitsemisen.
+
+
+
+
+User
+Minulla on canvas elementti jonka koko on tallennettu muuttujiin "gameWidth" ja "gameHeight".  Miten voisin piirtää taustalle väriltään vedenalaista maailmaa muistuttavan sinisen liukuvärin, siten että alhaalla olisi tummempaa (valo ei pääse pohjalle niin hyvin)
+ChatGPT
+Voit luoda vedenalaisen maailmaa muistuttavan sinisen liukuvärin käyttämällä Canvasin createLinearGradient-funktiota. Tämän avulla voit määrittää halutun liukuvärin ja piirtää sen taustalle. Tummempi sävy alhaalla voidaan saavuttaa määrittämällä taustaväriksi tummempi sininen ja liukuvärin lopetuskohtaan vaaleampi sininen.
+
+Tässä on esimerkki siitä, miten voit tehdä sen:
+
+javascript
+Copy code
+const canvas = document.getElementById("game-canvas");
+const ctx = canvas.getContext("2d");
+const gameWidth = canvas.width;
+const gameHeight = canvas.height;
+
+// Luodaan sinisen liukuvärin alkaen pohjasta (tummempi) ja päättyen yläosaan (vaaleampi)
+const gradient = ctx.createLinearGradient(0, gameHeight, 0, 0);
+gradient.addColorStop(0, "#003366"); // Tumma sininen
+gradient.addColorStop(1, "#66ccff"); // Vaalea sininen
+
+// Piirretään liukuväri taustalle
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, gameWidth, gameHeight);
+Tämä koodi luo sinisen liukuvärin, joka alkaa pohjasta (#003366) ja päättyy yläosaan (#66ccff). Voit säätää liukuvärin sävyjä ja sijaintia tarpeen mukaan saavuttaaksesi haluamasi vedenalaisen tunnelman.
+
+
+
+
+User
+
+2 / 2
+
+Hienoa, tärmäys tarkastus toimii nyt mallikkaasti. Säädin hieman tuota laskenta pistettä. 
+
+Pelini sisältämät kalat ovat nyt sivulta kuvattuja yksivärisiä hahmoja jotka koostuvat erilaisista geometrisistä elementeistä (kolmio, puoliympyrä, kuusikulmio sekä suorakulmio). Ne piirretään canvas elementille. Hahmoja voisi hieman elävöittää esimerkiksi piirtämällä niille silmät? Ehkä jotain muutakin. 
+ChatGPT
+On hienoa kuulla, että törmäystarkastus toimii hyvin!
+
+Voit elävöittää kalojen hahmoja lisäämällä niille silmät ja muita yksityiskohtia. Tässä on yksinkertainen esimerkki siitä, miten voit lisätä silmät kalan hahmoon:
+
+Piirrä kalan päässä olevaan kuvaan silmille sopivat kohdat tai alueet. Tämä voidaan tehdä esimerkiksi muuttamalla kalan pään suorakulmion piirtämisen yhteydessä tai lisäämällä uusia piirtokomentoja kuusikulmion piirtämiseen.
+
+Lisää kalalle silmien tiedot hahmo-objektiin. Voit tallentaa silmien sijainnin ja koon koordinaatteina ja kokoina.
+
+Piirrä silmät kalan hahmoon render.js -tiedostossa. Voit tehdä sen kalaa piirtävän funktion yhteydessä. Käytä fill()- ja arc()-komentoja luomaan pyöreät silmät.
+
+Esimerkiksi, jos kalalla on päässään suorakulmio ja haluat lisätä siihen kaksi silmää, voit tehdä seuraavat muutokset:
+
+javascript
+Copy code
+// Hahmo-objektiin lisätään silmien tiedot
+const playerFish = {
+  width: 50,
+  height: 20,
+  // ...
+  eye1: {
+    x: 10,
+    y: 10,
+    radius: 3
+  },
+  eye2: {
+    x: 30,
+    y: 10,
+    radius: 3
+  }
+};
+
+// Renderöintifunktiossa lisätään silmät kalan piirtämiseen
+function drawPlayerFish(ctx, fish) {
+  ctx.fillStyle = "blue"; // Muuta väri sopivaksi
+  ctx.fillRect(fish.positionX, fish.positionY, fish.width, fish.height);
+
+  // Piirrä silmät
+  ctx.fillStyle = "white"; // Silmien väri
+  ctx.beginPath();
+  ctx.arc(
+    fish.positionX + fish.eye1.x,
+    fish.positionY + fish.eye1.y,
+    fish.eye1.radius,
+    0,
+    2 * Math.PI
+  );
+  ctx.arc(
+    fish.positionX + fish.eye2.x,
+    fish.positionY + fish.eye2.y,
+    fish.eye2.radius,
+    0,
+    2 * Math.PI
+  );
+  ctx.fill();
+}
+Muista mukauttaa silmien sijainti ja koko sopiviksi kalan pään suhteen. Voit myös lisätä muita yksityiskohtia ja ominaisuuksia kalan hahmoon tarpeesi mukaan.
+
+
+
+
+User
+
+2 / 2
+
+Tarvitsen vain yhden silmän. Sain kuitenkin idean luomastasi koodin pätkästä. toinen pallo voisi toimia pupillina (musta pallo valkoisen sisällä). Oletuksena se olisi keskellä silmää, mutta sitä voisi tarvittaessa siirtää keskeltä koti silmän reunaa (suhteessa silmän sijaintiin), ikään kuin kala katsoisi johonkin suuntaan
+ChatGPT
+Hienoa, että sait idean ja haluat käyttää vain yhtä silmää! Voit lisätä pupillin silmän sisälle ja säätää sen sijaintia kalaa piirtävän funktion sisällä. Tässä on päivitetty koodiesimerkki, jossa on yksi silmä ja sen sisällä musta pupilli:
+
+javascript
+Copy code
+// Hahmo-objektiin lisätään silmän tiedot
+const playerFish = {
+  width: 50,
+  height: 20,
+  // ...
+  eye: {
+    x: 25,
+    y: 10,
+    radius: 5,
+    pupilX: 2,
+    pupilY: 0,
+    pupilRadius: 2
+  }
+};
+
+// Renderöintifunktiossa lisätään silmä ja pupilli kalan piirtämiseen
+function drawPlayerFish(ctx, fish) {
+  ctx.fillStyle = "blue"; // Muuta väri sopivaksi
+  ctx.fillRect(fish.positionX, fish.positionY, fish.width, fish.height);
+
+  // Piirrä silmä
+  ctx.fillStyle = "white"; // Silmän väri
+  ctx.beginPath();
+  ctx.arc(
+    fish.positionX + fish.eye.x,
+    fish.positionY + fish.eye.y,
+    fish.eye.radius,
+    0,
+    2 * Math.PI
+  );
+  ctx.fill();
+
+  // Piirrä pupilli
+  ctx.fillStyle = "black"; // Pupillin väri
+  ctx.beginPath();
+  ctx.arc(
+    fish.positionX + fish.eye.x + fish.eye.pupilX,
+    fish.positionY + fish.eye.y + fish.eye.pupilY,
+    fish.eye.pupilRadius,
+    0,
+    2 * Math.PI
+  );
+  ctx.fill();
+}
+Voit säätää pupillin sijaintia ja kokoa muuttamalla pupilX, pupilY ja pupilRadius -arvoja. Positiiviset arvot siirtävät pupillin silmän keskipisteestä kohti ulkoreunaa ja negatiiviset arvot siirtävät pupillin kohti silmän keskipistettä. Kokeile eri arvoja saadaksesi haluamasi efektin!
+
+
+
+
+User
+Teimme aikaisemmin vedenalaista maailmaa muistuttavan sinisen liukuvärin käyttämällä Canvasin "createLinearGradient" -funktiota. Saisiko pohjalle (ruudun alareunaan) tehtyä vastaavasti liukuvärjätyn alueen, joka muistuttaisi hiekka pohjaa vedenalaisessa maailmassa. Minulla on pelialueen koko tallennettu "gameWidth" ja "gameHeight" muuttujiin.
+ChatGPT
+Kyllä, voit tehdä hiekkapohjan käyttämällä Canvasin createLinearGradient -funktiota samalla tavalla kuin teimme sinisen liukuvärin vedenalaiselle alueelle. Tässä on esimerkki, miten voit luoda hiekkapohjan:
+
+javascript
+Copy code
+function drawSand(ctx, gameWidth, gameHeight) {
+  // Luodaan liukuvärjätty alue
+  const gradient = ctx.createLinearGradient(0, gameHeight, 0, gameHeight * 0.8);
+  gradient.addColorStop(0, "sandybrown"); // Yläreuna väri
+  gradient.addColorStop(1, "white"); // Alareuna väri (valkoinen)
+
+  // Piirrä liukuvärjätty alue
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, gameHeight * 0.8, gameWidth, gameHeight * 0.2);
+}
+Kutsu tätä funktiota sen jälkeen, kun olet piirtänyt pelin taustan, jotta hiekkapohja piirtyy sen päälle. Esimerkissä liukuvärjätty alue ulottuu 80% pelialueen korkeudesta alaspäin ja sen värit vaihtuvat ylhäältä alaspäin. Voit muokata värejä ja liukuvärin sijaintia muuttamalla gradient.addColorStop -kutsujen arvoja.
+
+
+
+
+User
+Saisikohan tuohon hiekka alueen yläreunaan kevyttä aaltoilua. Pohja ei ole yleensä kovin tasainen alue.
+ChatGPT
+Kyllä, voit luoda kevyttä aaltoilua hiekka-alueen yläreunaan käyttämällä sinifunktiota (sine function) aaltomaisen efektin luomiseksi. Tässä on esimerkki, miten voit tehdä sen:
+
+javascript
+Copy code
+function drawSand(ctx, gameWidth, gameHeight, time) {
+  // Luodaan liukuvärjätty alue
+  const gradient = ctx.createLinearGradient(0, gameHeight, 0, gameHeight * 0.8);
+  gradient.addColorStop(0, "sandybrown"); // Yläreuna väri
+  gradient.addColorStop(1, "white"); // Alareuna väri (valkoinen)
+
+  // Piirrä liukuvärjätty alue
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, gameHeight * 0.8, gameWidth, gameHeight * 0.2);
+
+  // Aaltoileva yläreuna
+  const waveHeight = 5; // Aallon korkeus
+  const waveLength = 100; // Aallon pituus
+  const yOffset = 2 * Math.sin(time / 100); // Muutetaan aallon korkeutta ajan funktiona (voit muuttaa aallon liikettä muuttamalla aallon pituutta)
+
+  ctx.beginPath();
+  ctx.moveTo(0, gameHeight * 0.8);
+  for (let x = 0; x < gameWidth; x += 10) {
+    const y = gameHeight * 0.8 + waveHeight * Math.sin((x + time) / waveLength) + yOffset;
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(gameWidth, gameHeight * 0.8);
+  ctx.closePath();
+
+  ctx.fillStyle = "sandybrown";
+  ctx.fill();
+}
+Tämä koodi lisää kevyttä aaltoilua hiekka-alueen yläreunaan. Aaltoilun liike muuttuu ajan kuluessa, mikä luo vaikutelman liikkuvasta vedestä. Voit muokata aallon korkeutta ja pituutta muuttamalla waveHeight ja waveLength -muuttujien arvoja. Aallon nopeutta ja liikettä voit muuttaa muuttamalla time -muuttujan arvoa ajan kuluessa.
+
+
+
+
+User
+Vaikuttaa hyvin lupaavalta. Saisiko tuota alueen korkeutta muutettua (vaikkapa muuttujan avull?), pohja voisi olla matalampi kaistale. 
+ChatGPT
+Toki! Voit lisätä uuden muuttujan, esimerkiksi sandHeight, joka määrittää hiekkapohjan korkeuden suhteessa pelialueen korkeuteen. Voit sitten käyttää tätä muuttujaa laskemaan hiekkapohjan yläreunan ja aaltoilevan alueen korkeuden.
+
+Tässä päivitetty koodi, jossa on mukana sandHeight-muuttuja:
+
+javascript
+Copy code
+function drawSand(ctx, gameWidth, gameHeight, time) {
+  const sandHeight = gameHeight * 0.2; // Voit muuttaa hiekkapohjan korkeutta täällä
+
+  // Luodaan liukuvärjätty alue
+  const gradient = ctx.createLinearGradient(0, gameHeight, 0, gameHeight - sandHeight);
+  gradient.addColorStop(0, "sandybrown"); // Yläreuna väri
+  gradient.addColorStop(1, "white"); // Alareuna väri (valkoinen)
+
+  // Piirrä liukuvärjätty alue
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, gameHeight - sandHeight, gameWidth, sandHeight);
+
+  // Aaltoileva yläreuna
+  const waveHeight = 5; // Aallon korkeus
+  const waveLength = 100; // Aallon pituus
+  const yOffset = 2 * Math.sin(time / 100); // Muutetaan aallon korkeutta ajan funktiona (voit muuttaa aallon liikettä muuttamalla aallon pituutta)
+
+  ctx.beginPath();
+  ctx.moveTo(0, gameHeight - sandHeight);
+  for (let x = 0; x < gameWidth; x += 10) {
+    const y = gameHeight - sandHeight + waveHeight * Math.sin((x + time) / waveLength) + yOffset;
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(gameWidth, gameHeight - sandHeight);
+  ctx.closePath();
+
+  ctx.fillStyle = "sandybrown";
+  ctx.fill();
+}
+Muutettu sandHeight-muuttujan arvo määrittää, kuinka korkea hiekkapohja on suhteessa pelialueen korkeuteen. Voit kokeilla erilaisia arvoja ja valita sopivimman hiekkapohjan korkeuden pelillesi.
+
+
+
+
+User
+
+2 / 2
+
+Pitäisikö tuo pohja piirtää kummastakin reunasta hieman pelialueen ulkopuolelle ? Nyt aalto loppuu hieman kesken reunassa.
+ChatGPT
+Hyvä havainto! Kyllä, voit piirtää pohjan hieman pelialueen ulkopuolelle, jotta aalto ei lopu äkillisesti reunassa. Voit muuttaa pohjan piirtämistä seuraavasti:
+
+javascript
+Copy code
+function drawSand(ctx, gameWidth, gameHeight, time) {
+  const sandHeight = gameHeight * 0.2;
+  const sandWidth = gameWidth * 1.2; // Muuta tätä arvoa tarvittaessa
+
+  // Luodaan liukuvärjätty alue
+  const gradient = ctx.createLinearGradient(0, gameHeight, 0, gameHeight - sandHeight);
+  gradient.addColorStop(0, "sandybrown");
+  gradient.addColorStop(1, "white");
+
+  // Piirrä liukuvärjätty alue
+  ctx.fillStyle = gradient;
+  ctx.fillRect(-sandWidth / 2, gameHeight - sandHeight, sandWidth, sandHeight);
+
+  // Aaltoileva yläreuna
+  const waveHeight = 5;
+  const waveLength = 100;
+  const yOffset = 2 * Math.sin(time / 100);
+
+  ctx.beginPath();
+  ctx.moveTo(-sandWidth / 2, gameHeight - sandHeight);
+  for (let x = -sandWidth / 2; x < gameWidth + sandWidth / 2; x += 10) {
+    const y = gameHeight - sandHeight + waveHeight * Math.sin((x + time) / waveLength) + yOffset;
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(gameWidth + sandWidth / 2, gameHeight - sandHeight);
+  ctx.closePath();
+
+  ctx.fillStyle = "sandybrown";
+  ctx.fill();
+}
+Nyt pohja ulottuu hieman pelialueen ulkopuolelle, mikä tekee aallosta luontevamman ja vedenalaisen maailman realistisemman näköisen. Voit säätää sandWidth-muuttujan arvoa tarpeen mukaan, jotta pohja ulottuu sopivan laajalle pelialueen ulkopuolelle.
+
+
+
+
+User
+
+2 / 2
+
+Luomassamme pelissä kala -hahmot on tallennettu objektiin. Jotkin kalan ominaisuudet määräytyvät arvotun värin mukaan ja ne ovat värikohtaisia:
+- Väri ("color")
+- Koko ("width" ja "height")
+- Silmä ("eye", objekti johon on tallennettu sijainti arvoina "x" ja "y" sekä "radius")
+- Pupilli ("pupil",  objekti johon on tallennettu sijainti arvoina "x" ja "y" sekä "radius")
+
+Voisiko nämä ennalta määrätyt väri kohtaiset tiedot säilöä (objektina?) listaan, josta ne voisi kätevästi noutaa generoinnin yhteydessä ja liittää tiedot kala -objektiin.  
+ChatGPT
+Kyllä, voit luoda listan, jossa on ennalta määrätyt tiedot eri väreille. Jokainen listaan tallennettu objekti voi sisältää tarvittavat tiedot, kuten koon, silmän ja pupillin tiedot.
+
+Tässä on esimerkki, miten voit luoda tällaisen listan:
+
+javascript
+Copy code
+const fishColorsData = [
+  {
+    color: "blue",
+    width: 50,
+    height: 30,
+    eye: { x: 15, y: 10, radius: 5 },
+    pupil: { x: 16, y: 10, radius: 2 },
+  },
+  {
+    color: "red",
+    width: 40,
+    height: 25,
+    eye: { x: 12, y: 8, radius: 4 },
+    pupil: { x: 13, y: 8, radius: 2 },
+  },
+  // Voit lisätä muita värejä ja niiden tietoja tarpeen mukaan
+];
+Sitten, kun generoit kalan, voit valita sille satunnaisen värin ja hakea sen tiedot fishColorsData-listasta:
+
+javascript
+Copy code
+function generateRandomFish() {
+  const randomColorData = fishColorsData[Math.floor(Math.random() * fishColorsData.length)];
+  const newFish = {
+    color: randomColorData.color,
+    width: randomColorData.width,
+    height: randomColorData.height,
+    eye: { ...randomColorData.eye }, // Kopioidaan silmä-objekti uuteen kalahaamuun
+    pupil: { ...randomColorData.pupil }, // Kopioidaan pupilli-objekti uuteen kalahaamuun
+    // Lisää muut kalan ominaisuudet tarpeen mukaan
+  };
+
+  // Generoidaan kalan sijainti ja muut ominaisuudet
+  // ...
+
+  return newFish;
+}
+Tällä tavoin voit helposti säilyttää ennalta määrätyt tiedot eri väreille listassa, ja voit hakea tarvittavat tiedot satunnaiselle kalalle generoinnin yhteydessä.
+
+
+
+
+User
+Kala hahmon osuessa pelaajan kala hahmoon kukin kala laji (kalan väri) vaikuttaa eritavoin pelin kulkuun. Olisiko hyvä liittää ennalta määrättyihin ("fishColorData") objekteihin tieto vaikutuksesta funktio kutsuna (jota voitaisiin kutsua sitten törmäys tarkistuksen yhteydessä) tai vastaavaa?
+ChatGPT
+Kyllä, voit liittää ennalta määrättyihin fishColorData-objekteihin tiedon siitä, miten kukin kala vaikuttaa pelin kulkuun. Tämä voidaan toteuttaa esimerkiksi liittämällä kuhunkin objektiin funktio, joka kutsutaan törmäystarkistuksen yhteydessä. Funktion voi määritellä joko suoraan objektin ominaisuutena tai erillisinä funktioina, jotka liitetään fishColorData-objekteihin.
+
+Esimerkiksi:
+
+javascript
+Copy code
+const fishColorsData = [
+  {
+    color: "blue",
+    width: 50,
+    height: 30,
+    eye: { x: 15, y: 10, radius: 5 },
+    pupil: { x: 16, y: 10, radius: 2 },
+    onCollision: (playerFish) => {
+      // Tämä funktio kutsutaan, kun pelaajan kala törmää siniseen kalaan
+      // Voit toteuttaa tässä vaikutuksen, jonka sininen kala aiheuttaa
+      // Esim. vähennä pelaajan pisteitä tai hidasta pelin nopeutta
+    },
+  },
+  {
+    color: "red",
+    width: 40,
+    height: 25,
+    eye: { x: 12, y: 8, radius: 4 },
+    pupil: { x: 13, y: 8, radius: 2 },
+    onCollision: (playerFish) => {
+      // Tämä funktio kutsutaan, kun pelaajan kala törmää punaiseen kalaan
+      // Voit toteuttaa tässä vaikutuksen, jonka punainen kala aiheuttaa
+      // Esim. vähennä pelaajan elämiä tai lisää pelin nopeutta
+    },
+  },
+  // Lisää muut kalalajit ja niiden vaikutusfunktiot tarpeen mukaan
+];
+Sitten, kun kahden kalan törmäys havaitaan, voit kutsua kyseisen kalan onCollision-funktiota ja antaa sille pelaajan kala hahmo parametrina. Tämä tapahtuu törmäystarkistuksen sisällä.
+
+Tällä tavoin voit toteuttaa erilaisia vaikutuksia kalojen välisissä törmäyksissä eri kalalajeille ja säilyttää ne kätevästi fishColorData-objektien yhteydessä.
+
+
+
+
+User
+"onCollision" -funktio ei tarvitse pelaajan kalaa parametrikseen.
+
+Kahden värisestä kalasta saa pisteitä, molemmista kuitenkin eri määrän (keltaisesta 1 ja sinisestä 3), pitäisikö tuohon lisätä erillinen funktio kutsu (pisteitä lisäävään funktioon, sellasita ei vielä löydy), kahden erillisen funktion sijasta? Funktiolle annettaisiin parametrina lisättävien pisteiden määrä. Piste tilannetta ylläpidetään "score" -muuttujassa
+ChatGPT
+Sisäisesti voit toteuttaa kalalajikohtaisen pisteiden lisäämisen onCollision-funktioon, jolloin voit suoraan käyttää sitä vaikutuksen toteuttamiseen törmäystarkistuksessa. Voit siis lisätä parametrin, joka kertoo kuinka monta pistettä kaloista saadaan. Jos pisteet ovat negatiivisia, ne vähentävät pelaajan pisteitä.
+
+Esimerkiksi:
+
+javascript
+Copy code
+const fishColorsData = [
+  {
+    color: "blue",
+    width: 50,
+    height: 30,
+    eye: { x: 15, y: 10, radius: 5 },
+    pupil: { x: 16, y: 10, radius: 2 },
+    onCollision: () => {
+      // Tämä funktio kutsutaan, kun pelaajan kala törmää siniseen kalaan
+      // Voit toteuttaa tässä vaikutuksen, jonka sininen kala aiheuttaa
+      // Esim. lisää pelaajalle 3 pistettä
+      addPoints(3);
+    },
+  },
+  {
+    color: "red",
+    width: 40,
+    height: 25,
+    eye: { x: 12, y: 8, radius: 4 },
+    pupil: { x: 13, y: 8, radius: 2 },
+    onCollision: () => {
+      // Tämä funktio kutsutaan, kun pelaajan kala törmää punaiseen kalaan
+      // Voit toteuttaa tässä vaikutuksen, jonka punainen kala aiheuttaa
+      // Esim. lisää pelaajalle 1 pisteen
+      addPoints(1);
+    },
+  },
+  // Lisää muut kalalajit ja niiden vaikutusfunktiot tarpeen mukaan
+];
+
+// Funktio, joka lisää pelaajalle pisteitä
+function addPoints(points) {
+  score += points;
+  // Voit tässä päivittää myös näytöllä näkyvää pistetilannetta tarvittaessa
+}
+Tällä tavoin voit kutsua onCollision-funktiota törmäystarkistuksessa ja kalat antavat pelaajalle eri määrän pisteitä törmäyksessä.
+
+
+
+
+User
+Kalalle arvotaan generoinnin yhteydessä liikkumisnopeus.  Useimmille kaloille nopeus arvotaan samalla tavalla, joten se ei tarvitse olla ennalta liitetty jokaisen kalan tietoihin. Joillekin kuitenkin haluaisin arpoa hieman normaalista poikkeavasti nopeuden. Näille kaloille nopeus arvonnan voisi liittää samaan tapaan funktio kutsuna. Jos kalan ennalta määrätyistä tiedoista ei löydy tätä tietoa, voidaan suorittaa normaali nopeus arvonta.
+ChatGPT
+Voit toteuttaa kalan nopeuden arvonnan käyttämällä funktiota, joka arpoa normaalin nopeuden, ellei erityistä nopeutta ole määritelty. Voit liittää tämän funktion kalan tietoihin samalla tavalla kuin aiemmat ominaisuudet, ja käyttää sitä kalaa luodessa.
+
+Esimerkiksi:
+
+javascript
+Copy code
+const fishColorsData = [
+  {
+    color: "blue",
+    width: 50,
+    height: 30,
+    eye: { x: 15, y: 10, radius: 5 },
+    pupil: { x: 16, y: 10, radius: 2 },
+    onCollision: () => {
+      // Vaikutus, jonka sininen kala aiheuttaa
+      addPoints(3);
+    },
+    // Arvotaan nopeus välillä 1-5
+    getSpeed: () => getRandomNumber(1, 5),
+  },
+  {
+    color: "red",
+    width: 40,
+    height: 25,
+    eye: { x: 12, y: 8, radius: 4 },
+    pupil: { x: 13, y: 8, radius: 2 },
+    onCollision: () => {
+      // Vaikutus, jonka punainen kala aiheuttaa
+      addPoints(1);
+    },
+    // Normaali nopeus arvotaan välillä 1-3
+    getSpeed: () => getRandomNumber(1, 3),
+  },
+  // Lisää muut kalalajit ja niiden nopeusfunktiot tarpeen mukaan
+];
+
+// Funktio, joka arpoa satunnaisen numeron annetulla välillä
+function getRandomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+// Funktio, joka luo uuden kalan
+function createFish(color) {
+  const fishData = fishColorsData.find((fish) => fish.color === color);
+
+  if (fishData) {
+    const speed = fishData.getSpeed();
+    // Luo kala käyttäen fishData-objektista saatuja tietoja ja arvottua nopeutta
+    // ...
+  } else {
+    // Jos kalalle ei ole määritelty erityisiä tietoja, arvo normaali nopeus
+    const speed = getRandomNumber(1, 5);
+    // Luo kala normaaleilla tiedoilla ja arvotulla nopeudella
+    // ...
+  }
+}
+Tällä tavoin voit käyttää getSpeed-funktiota kalan luomisessa, ja se arpoa normaalin nopeuden, jos erityisiä nopeustietoja ei ole määritelty kalan tiedoissa.
+
+
+
+
+User
+Nopeutta määritellessä ("generateFish" -funktion sisällä) pitäisi kai tarkastaa että löytyykö "fishData" -objektista ominaisuutta getSpeed, niin tiedetään että menetelläänkö normaalisti vai arvotaanko nopeus poikkeavasti.  Toki on liene hyvä tarkastaa ettei muuttuja (fishData) ole tyhjä ja listalta löytyi tallennettavaksi ennalta määritelty kala.
+ChatGPT
+Kyllä, olet aivan oikeassa. On hyvä tarkistaa, löytyykö fishData-objektista getSpeed-ominaisuutta ennen nopeuden arvonnan suorittamista. Lisäksi on hyvä varmistaa, että fishData ei ole tyhjä ja että kala löytyi listalta ennen sen tallentamista.
+
+Tässä päivitetty generateFish-funktio, joka sisältää nämä tarkistukset:
+
+javascript
+Copy code
+function generateFish() {
+  // Arvo satunnainen väri
+  const randomColor = fishColors[Math.floor(Math.random() * fishColors.length)];
+
+  // Etsi vastaava kala-objekti fishColorsData-listasta
+  const fishData = fishColorsData.find((fish) => fish.color === randomColor);
+
+  if (fishData) {
+    // Jos löydettiin kala-objekti, käytä getSpeed-funktiota tai arvo normaali nopeus
+    const speed = fishData.getSpeed ? fishData.getSpeed() : getRandomNumber(1, 5);
+    const fish = {
+      color: fishData.color,
+      width: fishData.width,
+      height: fishData.height,
+      eye: { ...fishData.eye },
+      pupil: { ...fishData.pupil },
+      positionX: gameWidth,
+      positionY: getRandomNumber(0, gameHeight - fishData.height),
+      speed: speed,
+      onCollision: fishData.onCollision,
+    };
+
+    return fish;
+  } else {
+    // Jos ei löydetty kala-objektia, arvo normaalit tiedot ja nopeus
+    const speed = getRandomNumber(1, 5);
+    const fish = {
+      color: randomColor,
+      width: 50,
+      height: 30,
+      eye: { x: 15, y: 10, radius: 5 },
+      pupil: { x: 16, y: 10, radius: 2 },
+      positionX: gameWidth,
+      positionY: getRandomNumber(0, gameHeight - 30),
+      speed: speed,
+      onCollision: () => {
+        // Tämän kalan oletusvaikutus törmäyksessä
+        addPoints(1);
+      },
+    };
+
+    return fish;
+  }
+}
+Tällä tavalla varmistat, että kalan luomiseen käytetään oikeaa nopeutta, joko kalakohtaisesti määriteltyä tai normaalia nopeutta, jos kalalle ei ole erityisiä tietoja määritelty. Lisäksi varmistat, että kala tallennetaan vain, jos se löytyi listalta (fishData ei ole tyhjä).
+
+
+
+
+User
+
+4 / 4
+
+Minulla on funktio, jossa arvotaan kalan värit: punainen (45%), keltainen (45%) sekä kupla eli sininen (10%). Luvut suluissa ovat todennäköisyyksiä. Luomasi "getRandomColor" -funktion sisältö on nyt seuravanlainen:
+function getRandomColor() {
+  const colors = ["red", "yellow", "blue"];
+  // NOTICE arvonnan todennäköisyyksiä muutettu
+  const probabilities = [0.45, 0.45, 0.1]; // Punainen 40%, keltainen 40%, sininen 20%
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < colors.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return colors[i];
+    }
+  }
+
+ Lisäksi minulla on "gameDifficulty" -muuttuja, missä ylläpidetään vallitsevaa vaikeustasoa. Vaikeustaso on aluksi 0. Kala hahmojen ennalta määritellyt tiedot on tallennettu "fishColorsData" -listaan edellisen antamasi esimerkin tapaan.
+
+Kuinka voisin muuttaa arvonta -funktiota siten, että ainakin seuraavat muutokset toteutuisi:
+1. aluksi punaista kalaa arvottaisiin 40% ja keltaista 60% todennäköisyydellä.
+2. sininen lisättäisi arvottavien kalojen mukaan vasta tasolta 2 eteenpäin? 
+3.  samalla arvottavien värien välinen suhde muuttuisi, keltaista ja punaista esiintyisi tasaisemmin ja sinisiä edelleen harvoin.
+ChatGPT
+Voit muuttaa arvontafunktiota toteuttamaan nämä muutokset helposti. Lisää vain ehto, joka tarkistaa nykyisen vaikeustason ja määrittelee sen perusteella, mitä värejä arvotaan. Voit muokata myös todennäköisyyslistaa vastaamaan uusia suhteita.
+
+Tässä päivitetty getRandomColor-funktio, joka ottaa huomioon vaikeustason ja määrittelee sen perusteella värien todennäköisyydet:
+
+javascript
+Copy code
+function getRandomColor(gameDifficulty) {
+  const colors = ["red", "yellow", "blue"];
+
+  // Muokkaa todennäköisyyslistaa vaikeustason perusteella
+  let probabilities;
+  if (gameDifficulty < 2) {
+    // Aluksi punainen 40% ja keltainen 60%
+    probabilities = [0.4, 0.6, 0];
+  } else {
+    // Tasolta 2 eteenpäin punainen 30%, keltainen 50% ja sininen 20%
+    probabilities = [0.3, 0.5, 0.2];
+  }
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < colors.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return colors[i];
+    }
+  }
+
+  // Oletuksena palautetaan sininen, jos kaikki todennäköisyydet ovat nollia (esim. vaikeustasolla 0)
+  return "blue";
+}
+Tämä päivitetty arvontafunktio ottaa huomioon vaikeustason (gameDifficulty) ja muuttaa todennäköisyyslistaa sen perusteella. Aluksi punainen kala arvotaan 40%:n todennäköisyydellä ja keltainen 60%:n todennäköisyydellä. Tasolta 2 eteenpäin punaista arvotaan 30%:n todennäköisyydellä, keltaista 50%:n todennäköisyydellä ja sinistä 20%:n todennäköisyydellä. Muut koodin osat voivat säilyä ennallaan.
+
+
+
+
+User
+Minulla on "fishColorsData" listalle tallennettu objekteina eri kala lajien (värien) ennalta määritellyt tiedot. Siniselle kalalle on määritelty "getSpeed" -ominaisuus, joka sisältää simppelin arvonnan (funktio) kahden nopeuden välillä. 
+
+Haluaisin määritellä uudelleen tuon nopeuden generoivan funktion. Neljän eri nopeuden välillä seuraavasti:
+- 1.2 (60%)
+- 1.0 (19%)
+- 1.8 (19%)
+- 0.8 (2%)
+ChatGPT
+Voit päivittää nopeuden generoivan funktion (getSpeed) helposti toteuttamaan haluamasi todennäköisyysjakauman. Voit käyttää samanlaista logiikkaa kuin aiemmin, mutta muokkaat todennäköisyyslistaa ja nopeuslistaa vastaamaan uusia arvoja.
+
+Tässä päivitetty getSpeed-funktio, joka ottaa huomioon haluamasi todennäköisyysjakauman:
+
+javascript
+Copy code
+function getSpeed() {
+  const speeds = [1.2, 1.0, 1.8, 0.8];
+  const probabilities = [0.6, 0.19, 0.19, 0.02];
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < speeds.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return speeds[i];
+    }
+  }
+
+  // Oletuksena palautetaan nopeus 1.2, jos kaikki todennäköisyydet ovat nollia
+  return 1.2;
+}
+Tämä päivitetty getSpeed-funktio käyttää uusia todennäköisyys- ja nopeuslistoja, jotta nopeus generoituu haluamallasi todennäköisyysjakaumalla. Funktio palauttaa nopeuden yhden neljästä eri nopeusarvosta niiden määriteltyjen todennäköisyyksien perusteella. Muut koodin osat voivat säilyä ennallaan.
+
+
+
+
+User
+
+4 / 4
+
+Käsittelimme hetki sitten "getRandomColor" -funktiota. Funktiossa määriteltiin erilaisia arvonta painotuksia. Määrittelimme, ettei kuplia (sininen) esiinny lainkaan ennen vaikeusastetta ("gameDifficulty") 2.  
+
+Haluaisin lisää vaikeustason aiheuttamia muutoksia tähän arvontaan. Esimerkiksi
+- aluksi arvottaisiin painotuksella: punainen (25%), keltainen (75%) ja sininen (0%)
+- tasolta yksi eteenpäin painotus olisi: punainen (35%), keltainen (65%), sininen (0%)
+- sininen lisättäisiin edelleen tasolta 2 eteenpäin painotuksella: punainen (40%), keltainen (45%) ja sininen  (15%)
+- tasolta 4 eteenpäin: punainen (45%), keltainen (45%) ja sininen (10%)
+ChatGPT
+Voit päivittää getRandomColor-funktiota lisäämällä vaikeustason aiheuttamat muutokset haluamallasi tavalla. Voit käyttää if-lausekkeita tarkistaaksesi vaikeustason ja asettaa sen perusteella todennäköisyyslistan. Tässä esimerkki, kuinka päivittää getRandomColor-funktio vastaamaan haluamiasi vaikeustason aiheuttamia muutoksia:
+
+javascript
+Copy code
+function getRandomColor(gameDifficulty) {
+  let colors, probabilities;
+
+  if (gameDifficulty >= 4) {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.45, 0.45, 0.1]; // Punainen 45%, keltainen 45%, sininen 10%
+  } else if (gameDifficulty >= 2) {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.4, 0.45, 0.15]; // Punainen 40%, keltainen 45%, sininen 15%
+  } else if (gameDifficulty >= 1) {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.35, 0.65, 0]; // Punainen 35%, keltainen 65%, sininen 0%
+  } else {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.25, 0.75, 0]; // Punainen 25%, keltainen 75%, sininen 0%
+  }
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < colors.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return colors[i];
+    }
+  }
+
+  // Oletuksena palautetaan väri "red", jos kaikki todennäköisyydet ovat nollia
+  return "red";
+}
+Tämä päivitetty getRandomColor-funktio käyttää nyt vaikeustasoon perustuvaa ehtorakennetta ja asettaa todennäköisyyslistan sen perusteella. Näin voit määrittää haluamasi vaikeustason aiheuttamat muutokset kalan värien arvontaan. Muut koodin osat voivat säilyä ennallaan.
+
+
+
+
+User
+Miten onnistuisi tasolta 4 eteenpäin tuon punaisen ja keltaisen välisen painotuksen muuttumaan enemmän punaisen suuntaan askel kerrallaan. Sinistä arvottaisiin yhä 10% painosuhteella. Tarkoitan että tasolla 4 eteenpäin painosuhde olisi edelleen: punainen (45%), keltainen (45%) ja sininen (10%) ja mitä korkeammaksi vaikeustaso nousee, punaisen todennäköisyys nousisi (1-2%? tasoa kohden) ja vastaavasti keltaisen todennäköisyys putoaisi saman verran. 
+ChatGPT
+Voit toteuttaa punaisen ja keltaisen välisen painotuksen muutoksen askel kerrallaan lisäämällä tai vähentämällä tietty prosentuaalinen määrä punaisen ja keltaisen todennäköisyyksiin vaikeustason mukaan. Voit käyttää for-luuppia lisätäksesi tai vähentääksesi prosentuaalisen määrän kumpaankin väriin tasolta 4 eteenpäin.
+
+Tässä esimerkki, kuinka päivittää getRandomColor-funktio toteuttamaan toivomasi punaisen ja keltaisen välisen painotuksen muutoksen:
+
+javascript
+Copy code
+function getRandomColor(gameDifficulty) {
+  let colors, probabilities;
+
+  if (gameDifficulty >= 4) {
+    colors = ["red", "yellow", "blue"];
+    const redProbability = 0.45 + (gameDifficulty - 4) * 0.02; // Punaisen todennäköisyys nousee 1-2% jokaisella vaikeustason nousulla
+    const yellowProbability = 0.45 - (gameDifficulty - 4) * 0.02; // Keltaisen todennäköisyys laskee 1-2% jokaisella vaikeustason nousulla
+    probabilities = [redProbability, yellowProbability, 0.1]; // Sininen pysyy samana (10%)
+  } else if (gameDifficulty >= 2) {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.4, 0.45, 0.15]; // Punainen 40%, keltainen 45%, sininen 15%
+  } else if (gameDifficulty >= 1) {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.35, 0.65, 0]; // Punainen 35%, keltainen 65%, sininen 0%
+  } else {
+    colors = ["red", "yellow", "blue"];
+    probabilities = [0.25, 0.75, 0]; // Punainen 25%, keltainen 75%, sininen 0%
+  }
+
+  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+  const random = Math.random();
+  let cumulativeProbability = 0;
+  for (let i = 0; i < colors.length; i++) {
+    cumulativeProbability += probabilities[i];
+    if (random < cumulativeProbability) {
+      return colors[i];
+    }
+  }
+
+  // Oletuksena palautetaan väri "red", jos kaikki todennäköisyydet ovat nollia
+  return "red";
+}
+Tässä esimerkissä punaisen todennäköisyys nousee 1-2% jokaisella vaikeustason nousulla (tasolta 4 eteenpäin), kun taas keltaisen todennäköisyys laskee saman verran. Sinisen todennäköisyys pysyy vakiona (10%) kaikilla vaikeustasoilla. Voit säätää prosentuaalisen määrän lisäämistä tai vähentämistä muuttamalla 0.02-lukua haluamaasi arvoon.
+
+
+
+
+User
+
+2 / 2
+
+"updateGame" -funktiossa suoritetaan törmäys tarkastus "checkCollision"  -funktiossa (parametreinaan playerFish, fish), joka palauttaa boolean arvona tarkastuksen tuloksen. Kala -objektilla on ominaisuus "onCollision", johon on tallennettu törmäys tapahtumat funktiona. 
+
+Nykyisessä koodissa, kun törmäys todetaan, suoritetaan ehto rakenteessa (jos kala oli punainen, jos kala oli keltainen jne.) törmäyksen aiheuttama tapahtuma.  Haluaisin luopua tästä ja korvata sen suorittamalla tuon kalan "onCollision" -funktion. 
+ChatGPT
+Jos haluat suorittaa kalan "onCollision" -funktion sen sijaan, että käytät ehto-rakennetta törmäyksen aiheuttaman tapahtuman määrittämiseksi, voit tehdä sen seuraavasti:
+
+Poista ehto-rakenne, joka määrittää törmäyksen aiheuttaman tapahtuman. Voit jättää pois kaikki ehtolausekkeet, jotka liittyvät kalan värin määrittämiseen.
+
+Sen sijaan, kun törmäys on havaittu, kutsu suoraan kalan "onCollision" -funktiota.
+
+Alla on esimerkki, miten päivittää "updateGame" -funktio suorittamaan törmäyksen jälkeiset toimet kalan "onCollision" -funktiolla:
+
+javascript
+Copy code
+function updateGame() {
+  // ...muu koodi...
+
+  // Törmäystarkistus
+  for (let i = 0; i < fishList.length; i++) {
+    const fish = fishList[i];
+    if (checkCollision(playerFish, fish)) {
+      fish.onCollision(); // Suoritetaan kalan "onCollision" -funktio törmäyksen tapahtuessa
+      // Tässä voit tehdä muutakin logiikkaa, jos tarpeen
+    }
+  }
+
+  // ...muu koodi...
+}
+Tämä kutsuu kunkin kalan "onCollision" -funktiota suoraan törmäyksen tapahtuessa sen sijaan, että käyttäisit ehto-rakennetta kalan värin perusteella. Näin voit luopua erillisistä ehtolausekkeista ja tehdä kalan "onCollision" -funktioista itsenäisempiä ja helpommin hallittavia.

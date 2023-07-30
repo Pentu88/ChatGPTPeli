@@ -3,14 +3,14 @@
 ## v0.6.0
 
 ## Uutta
-- törmäys tarkastus uudistettu
-
-## Bugeja korjattu
+- Törmäys tarkastus uudistettu
 - Taustaa päivitetty
-- Kalojen muotoa korjattu
-- Kalojen piirtoa säädetty
+- Kalojen muotoa päivitetty
+- Kalojen piirtoa muutettu
+- Kalojen arvonta uudistettu
+- Kuplle uudistettu nopeus arvonta
 
-## v0.5.4
+## [v0.5.4](https://github.com/Pentu88/ChatGPTPeli/tree/d71c9ce06036e8bed561d3140f67ddcd475a669c)
 
 ### Muutoksia
 - HTML -sivun tyylit siirretty erilliseen tyylitiedostoon
