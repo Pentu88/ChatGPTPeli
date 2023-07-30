@@ -1,29 +1,16 @@
-/// *** Lisätty ChatGPT'n luomaa koodia
-// var gameWidth = canvas.width;
-// var gameHeight = canvas.height;
-/// ***
-
 const gameVersion = "v0.6.0"
 
-/// *** Lisätty ChatGPT'n luomaa koodia
 var movementInterval; // Muuttuja liikkeen päivitystä varten
-/// ***
 
-/// *** Lisätty ChatGPT'n luomaa koodia
 let gameDifficulty = 0;
 
 // Määritä enimmäiskalatilanne peliruudulla
 // NOTICE const alkuliite muutettu, jotta pelin vaikeutumisen yhteydessä ruudussa olevien kalojen määrää voidaan lisätä
 let maxFishCount = 5; // Esimerkki: Enimmillään ruudulla voi olla 5 kalaa samanaikaisesti
-/// ***
 
-/// *** Lisätty ChatGPT'n luomaa koodia
 var gameOver = false; // Alustetaan peli lopetetuksi
-/// ***
 
-/// *** Lisätty ChatGPT'n luomaa koodia
 var score = 0; // Alustetaan pistemäärä nollaksi
-/// ***
 
 // NOTICE lisätty muuttuja, johon ChatGPT on viitannut luomassaan koodissa
 let normalSpeed = 1
@@ -31,14 +18,10 @@ let normalSpeed = 1
 // NOTICE lisätty muuttuja, johon ChatGPT on viitannut luomassaan koodissa
 let time = 0
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Alkuperäinen pelaajan kalan position arvo
 var initialPlayerPosition = 150;
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 var fishCount = 0; // Alustetaan generoitujen kalojen määrä nollaksi
-// ***
 
 // Pelaajan kalan tiedot
 var playerFish = {
@@ -65,7 +48,6 @@ var playerFish = {
   }
 };
 
-// *** Lisätty ChatGPT'n luomaa koodia
 const fishColorsData = [
   {
     color: "red",
@@ -139,7 +121,6 @@ const fishColorsData = [
 	},
   },
 ];
-// ***
 
 // Luo uuden kalalistan, johon lisätään muut kalaobjektit
 var fishList = [];
@@ -149,16 +130,13 @@ function getVersion() {
 	return gameVersion
 }
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Aloita peli
 function startGame() {
   // NOTICE Muuttujat on säästetty funktion edellisestä versiosta
   fishList = [];
   score = 0;
   
-  // *** Lisätty ChatGPT'n luomaa koodia
   fishCount = 0; // Nollaa generoitujen kalojen määrä
-  // ***
   
   // NOTICE lisätty nollauksia
   gameDifficulty = 0;
@@ -166,29 +144,22 @@ function startGame() {
   normalSpeed = 1;
   time = 0
   
-  // *** Lisätty ChatGPT'n luomaa koodia
   // Palauta pelaajan kalan position alkuperäiseen arvoon
   playerFish.positionY = initialPlayerPosition;
-  // ***
-  
-  // *** Lisätty ChatGPT'n luomaa koodia
+
   // Päivitä pistemäärän näyttö
   document.getElementById("score-display").textContent = score;
-  // ***
   
   canvas.removeEventListener("click", startGame);
   gameOver = false;
   updateGame();
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia (v0.6.0)
 // Funktio, joka lisää pelaajalle pisteitä
 function addPoints(points) {
   score += points;
   // Voit tässä päivittää myös näytöllä näkyvää pistetilannetta tarvittaessa
 }
-// ***
 
 // 
 function getRandomColor() {
@@ -264,14 +235,8 @@ function generateFish() {
   } else {
 	  console.log("Arvottua kalaa ei löytynyt!")
   }
-  // Päivitä pelin vaikeustaso, kun kaloja on generoitu 25 lisää
-  // if (fishCount % 25 === 0) {
-  //  updateGameDifficulty();
-  // }
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Määritä pistemäärärajat eri vaikeustasoille
 const difficultyThresholds = {
   1: 10, // Esimerkki: 10 pistettä vaaditaan vaikeustason 1 saavuttamiseen
@@ -293,9 +258,7 @@ function updateGameDifficulty(score) {
     }
   }
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 function checkCollision_OLD(playerFish, fish) {	
   // Tarkista, osuvatko kalojen rajat toisiinsa
   // NOTICE törmäys tarkastusta hienosäädetty
@@ -333,9 +296,7 @@ function checkCollision(playerFish, fish) {
 
   return false; // Eivät osu yhteen
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Pelin päätyttyä tarkista tulosennätys
 // NOTICE funktion nimi muutettu sekannuksen välttämiseksi
 function updateGameOver() {
@@ -346,7 +307,6 @@ function updateGameOver() {
   updateHighScoreElement();
   // Muut pelin lopettamiseen liittyvät toimenpiteet...
 }
-// ***
 
 // Päivittää pelitapahtumat ja liikuttaa kaloja
 function updateGame() {
@@ -374,10 +334,8 @@ function updateGame() {
   // NOTICE funktio kutsu lisätty
   renderGame(fishList, playerFish)
    
-  // *** Lisätty ChatGPT'n luoma koodia
   // NOTICE muuttuja viittausta muokattu vastaamaan aiempaa koodia
   updateGameDifficulty(score);
-  // ***
 
   // Generoi uusi kala satunnaisesti
   // NOTICE generointi tiheyttä muutettu
@@ -385,7 +343,7 @@ function updateGame() {
 	//  && fishList.length < maxFishCount ChatGPT'n luomaa ominaisuutta ei vielä lisätty
     generateFish();
   }
-  /// ***
+
   // Tarkista, onko peli päättynyt
   if (!gameOver) {
     requestAnimationFrame(updateGame);
@@ -396,10 +354,8 @@ function updateGame() {
   }
   
   time += 1 * normalSpeed;
-  // ***
 }
 
-// *** Lisätty ChatGPT'n luomaa koodia
 function startMoving(direction) {
   // Tarkista, että liike ei ole jo käynnissä
   if (!movementInterval) {
@@ -455,9 +411,7 @@ function updatePlayerFishPosition(direction) {
     playerFish.positionY = gameHeight - playerFish.height / 2;
   }
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // NOTICE lisätty funktio kutsut jo olemassa oleviin funktioigin
 // Kuunnellaan napin painalluksia
 document.getElementById('move-up').addEventListener('mousedown', function() {
@@ -497,11 +451,8 @@ document.getElementById('move-up').addEventListener('touchend', () => {
 document.getElementById('move-down').addEventListener('touchsend', () => {
   stopMoving();
 });
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Kutsu drawGameOver-funktiota pelin alussa
 // NOTICE "updateHighScore" -funktio kutsu lisätty
 updateHighScoreElement()
 drawStartGame();
-// ***

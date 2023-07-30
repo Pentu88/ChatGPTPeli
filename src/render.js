@@ -6,18 +6,14 @@ var gameWidth = canvas.width;
 var gameHeight = canvas.height;
 
 function drawBackground(ctx, canvasWidth, canvasHeight) {
-  // Piirrä pelialueen tausta
-  // ctx.fillStyle = "lightblue"; // Aseta taustan väri
-  // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-  
   // Luodaan sinisen liukuvärin alkaen pohjasta (tummempi) ja päättyen yläosaan (vaaleampi)
-const gradient = ctx.createLinearGradient(0, gameHeight, 0, 0);
-gradient.addColorStop(0, "#003366"); // Tumma sininen
-gradient.addColorStop(1, "#66ccff"); // Vaalea sininen
+  const gradient = ctx.createLinearGradient(0, gameHeight, 0, 0);
+  gradient.addColorStop(0, "#003366"); // Tumma sininen
+  gradient.addColorStop(1, "#66ccff"); // Vaalea sininen
 
-// Piirretään liukuväri taustalle
-ctx.fillStyle = gradient;
-ctx.fillRect(0, 0, gameWidth, gameHeight);
+  // Piirretään liukuväri taustalle
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, gameWidth, gameHeight);
   
   // Piirrä pohjan hiekanvärisen alueen alareuna
   // NOTICE "context" muuttuja viittaukset vaihdettu muotoon "ctx"
@@ -93,9 +89,7 @@ function drawStartGame() {
 
   canvas.addEventListener("click", startGame);
 }
-// ***
 
-// *** Lisätty ChatGPT'n luomaa koodia
 // Piirrä "Peli loppui" -viesti ja "Aloita peli" -nappi
 function drawGameOver() {
   ctx.save(); // Tallenna piirtotila
@@ -121,9 +115,7 @@ function drawGameOver() {
 
   canvas.addEventListener("click", startGame);
 }
-// ***
 
-// v4
 // NOTICE "playerFish" muuttuja viittaukset muutettu "fish" -muotoon, kuten muissakin kaloissa
 function drawPlayerFish(fish) {
   ctx.fillStyle = playerFish.color; // Aseta pelaajan kalan väri (esim. oranssi)
@@ -171,7 +163,6 @@ function drawPlayerFish(fish) {
   );
   ctx.fill();
 }
-// ***
 
 function drawRedFish(fish) {
   ctx.fillStyle = "red";
