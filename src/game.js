@@ -73,7 +73,7 @@ const fishColorsData = [
     height: 36,
     eye: { x: 12, y: -5, radius: 6},
     pupil: { x: -1, y: 0, radius: 3},
-    onCollision: (playerFish) => {
+    onCollision: (playerFish) => { 
       // Tämä funktio kutsutaan, kun pelaajan kala törmää punaiseen kalaan
       // Voit toteuttaa tässä vaikutuksen, jonka punainen kala aiheuttaa
       // Esim. vähennä pelaajan elämiä tai lisää pelin nopeutta
@@ -88,9 +88,11 @@ const fishColorsData = [
     height: 24,
     eye: { x: 11, y: -3, radius: 4},
     pupil: { x: -1, y: 0, radius: 2},
-    onCollision: (playerFish) => {
+    onCollision: (fish) => {  // NOTICE argumentti muutettu (playerFish -> fish)
       console.log("Pelaaja sai pisteen!");
+	  // TODO lisää funktio kutsu
       score++; // Lisätään pistemäärään yksi
+	  // addPoints(1)
 	  
 	  // Poista kala fishList-listalta
       var fishIndex = fishList.indexOf(fish);
@@ -106,7 +108,7 @@ const fishColorsData = [
 	// NOTICE kupla ei tarvitse silmään liittyviä tietoja
     // eye: { x: 15, y: 10, radius: 5 },
     // pupil: { x: 16, y: 10, radius: 2 },
-    onCollision: (playerFish) => {
+    onCollision: (fish) => {  // NOTICE argumentti muutettu (playerFish -> fish)
       console.log("Pelaaja sai kolme pistettä kuplasta!");
       score += 3; // Lisätään pistemäärään kolme
 
@@ -118,7 +120,22 @@ const fishColorsData = [
     },
 	// Arvotaan nopeus välillä 1-5
     getSpeed: () => {
-		return Math.random() < 0.08 ? .8 : 1;
+	  // NOTICE painotuksia muutettu	
+	  const speeds = [1.5, 1.0, 0.8];
+	  const probabilities = [0.7, 0.2, 0.1];
+
+	  // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
+	  const random = Math.random();
+	  let cumulativeProbability = 0;
+	  for (let i = 0; i < speeds.length; i++) {
+	  cumulativeProbability += probabilities[i];
+	  if (random < cumulativeProbability) {
+	  return speeds[i];
+	  }
+  }
+
+  // Oletuksena palautetaan nopeus 1.2, jos kaikki todennäköisyydet ovat nollia
+  return 1.2;
 	},
   },
 ];
@@ -147,6 +164,7 @@ function startGame() {
   gameDifficulty = 0;
   maxFishCount = 5;
   normalSpeed = 1;
+  time = 0
   
   // *** Lisätty ChatGPT'n luomaa koodia
   // Palauta pelaajan kalan position alkuperäiseen arvoon
@@ -161,6 +179,14 @@ function startGame() {
   canvas.removeEventListener("click", startGame);
   gameOver = false;
   updateGame();
+}
+// ***
+
+// *** Lisätty ChatGPT'n luomaa koodia (v0.6.0)
+// Funktio, joka lisää pelaajalle pisteitä
+function addPoints(points) {
+  score += points;
+  // Voit tässä päivittää myös näytöllä näkyvää pistetilannetta tarvittaessa
 }
 // ***
 
@@ -265,12 +291,24 @@ function getRandomColor() {
 
   // Muokkaa todennäköisyyslistaa vaikeustason perusteella
   let probabilities;
-  if (gameDifficulty < 2) {
+  /*if (gameDifficulty < 2) {
     // Aluksi punainen 40% ja keltainen 60%
     probabilities = [0.35, 0.65, 0];
   } else {
     // Tasolta 2 eteenpäin punainen 30%, keltainen 50% ja sininen 20%
     probabilities = [0.4, 0.5, 0.1];
+  }*/
+  
+  if (gameDifficulty >= 4) {
+    const redProbability = 0.45 + (gameDifficulty - 4) * 0.02; // Punaisen todennäköisyys nousee 1-2% jokaisella vaikeustason nousulla
+    const yellowProbability = 0.45 - (gameDifficulty - 4) * 0.02; // Keltaisen todennäköisyys laskee 1-2% jokaisella vaikeustason nousulla
+    probabilities = [redProbability, yellowProbability, 0.1]; // Sininen pysyy samana (10%)
+  } else if (gameDifficulty >= 2) {
+    probabilities = [0.4, 0.45, 0.15]; // Punainen 40%, keltainen 45%, sininen 15%
+  } else if (gameDifficulty >= 1) {
+    probabilities = [0.35, 0.65, 0]; // Punainen 35%, keltainen 65%, sininen 0%
+  } else {
+    probabilities = [0.25, 0.75, 0]; // Punainen 25%, keltainen 75%, sininen 0%
   }
 
   // Arvotaan satunnainen indeksi painotetulla todennäköisyydellä
@@ -319,7 +357,8 @@ function generateFish() {
       height: fishData.height,
       eye: { ...fishData.eye }, // Kopioidaan silmä-objekti uuteen kalahaamuun
       pupil: { ...fishData.pupil }, // Kopioidaan pupilli-objekti uuteen kalahaamuun
-      // Lisää muut kalan ominaisuudet tarpeen mukaan
+      onCollision: fishData.onCollision,
+	  // Lisää muut kalan ominaisuudet tarpeen mukaan
     };
 	
     fishList.push(newFish); // Lisää uusi kalaobjekti kalalistaan
@@ -429,7 +468,7 @@ function updateGame() {
 	
 	// Tarkista, osuuko pelaajan kala muihin kaloihin
 	// NOTICE alkuperäinen törmäys tarkastus vaihdettu funktio kutsuun
-    if (checkCollision(playerFish, fish)) {
+    /*if (checkCollision(playerFish, fish)) {
       console.log("Pelaajan kala osui kalaan " + fish.id + "!");
       // Tässä voit toteuttaa tarvittavat toimenpiteet, kun kalat osuvat yhteen
 	  // *** Lisätty ChatGPT'n luomaa koodia
@@ -453,6 +492,7 @@ function updateGame() {
         if (fishIndex !== -1) {
           fishList.splice(fishIndex, 1);
         }
+		
 	  // ***
 	  // ***
 	  
@@ -475,6 +515,13 @@ function updateGame() {
 	  // Päivitä pistemäärän näyttö
 	  document.getElementById("score-display").textContent = score;
 	  // ***
+    } */
+	
+	if (checkCollision(playerFish, fish)) {
+	  console.log(fish)
+      fish.onCollision(fish); // Suoritetaan kalan "onCollision" -funktio törmäyksen tapahtuessa
+      // Tässä voit tehdä muutakin logiikkaa, jos tarpeen
+	  document.getElementById("score-display").textContent = score;
     }
   }
   
