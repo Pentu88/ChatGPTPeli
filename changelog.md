@@ -2,7 +2,7 @@
 
 ## v0.6.0
 
-## Uutta
+### Uutta
 - Törmäys tarkastus uudistettu
 - Taustaa päivitetty
 - Kalojen muotoa päivitetty
